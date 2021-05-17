@@ -175,19 +175,19 @@
       <el-menu
         class="el-menu-demo"
         mode="horizontal"
-        default-active="1"
+        :default-active="ShowLoginOrRegistered+''"
       >
         <el-menu-item
-          index="1"
+          index="true"
           @click="ShowLoginOrRegistered=true"
         >
           登录
         </el-menu-item>
         <el-menu-item
-          index="2"
+          index="false"
           @click="ShowLoginOrRegistered=false"
         >
-          注册
+          注册/修改密码用户名
         </el-menu-item>
       </el-menu>
       <!-- 登录卡片 -->
@@ -201,7 +201,7 @@
           class="demo-ruleForm"
           :model="loginInfo"
           ref="loginFormRef"
-          :rules="loginFormRules"
+          :rules="formRules"
         >
           <el-form-item
             label="手机号"
@@ -234,14 +234,29 @@
         v-else
       >
         <el-form
+          size="mini"
+          ref="registeredFormRef"
           label-width="70px"
           class="demo-ruleForm"
           :model="registeredInfo"
+          :rules="formRules"
         >
           <el-form-item
             label="手机号"
+            prop="phone"
           >
-            <el-input v-model="registeredInfo.phone" />
+            <el-input
+              v-model="registeredInfo.phone"
+              class="input-with-select"
+            >
+              <el-button
+                slot="append"
+                @click="SendTheVerificationCode"
+                :disabled="WhetherToDisableSendTheVerificationCodeBtn"
+              >
+                发送验证码
+              </el-button>
+            </el-input>
           </el-form-item>
           <el-form-item
             label="验证码"
@@ -250,11 +265,13 @@
           </el-form-item>
           <el-form-item
             label="密码"
+            prop="password"
           >
             <el-input v-model="registeredInfo.password" />
           </el-form-item>
           <el-form-item
             label="用户名"
+            prop="nickname"
           >
             <el-input v-model="registeredInfo.nickname" />
           </el-form-item>
@@ -262,6 +279,7 @@
         <el-button
           type="primary"
           class="loginBtn"
+          :disabled="WhetherToDisableRegistrationBtn"
           @click="registered"
         >
           注册
@@ -319,7 +337,7 @@ export default {
         nickname: ''
       },
       // 表单验证
-      loginFormRules: {
+      formRules: {
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
           { validator: phonePass, trigger: 'blur' }
@@ -327,10 +345,18 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+        ],
+        nickname: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
         ]
       },
       // 用户歌单列表
-      UserSongList: []
+      UserSongList: [],
+      // 是否禁用注册按钮
+      WhetherToDisableRegistrationBtn: true,
+      // 是否禁用发送验证码按钮
+      WhetherToDisableSendTheVerificationCodeBtn: true
 
     }
   },
@@ -421,9 +447,40 @@ export default {
       window.localStorage.removeItem('img')
       window.localStorage.removeItem('name')
     },
+    // 发送验证码
+    async  SendTheVerificationCode () {
+      const { data: res } = await this.$http.get('/captcha/sent?phone=' + this.registeredInfo.phone)
+      if (res.code !== 200) return this.$message.error('发送验证码失败')
+      this.$message({
+        message: '发送验证码成功',
+        type: 'success'
+      })
+    },
     // 注册方法
     registered () {
+      this.$refs.registeredFormRef.validate(async (valid) => {
+        var res = {}
+        if (valid) {
+          this.$http.get('/register/cellphone', {
+            params: this.registeredInfo
+          })
+            .then((res) => {
+              this.$message({
+                message: '注册成功',
+                type: 'success'
+              })
+              this.ShowLoginOrRegistered = true
+            })
+            .catch((error) => {
+              if (error.response) {
+                this.$message.error(error.response.data.message)
+              }
+            })
 
+          // if (res.code !== 200) return this.$message.error('退出失败')
+        }
+        console.log(res)
+      })
     }
 
   },
@@ -434,6 +491,26 @@ export default {
         this.getDefault()
       } else {
         this.ifShow = true
+      }
+    },
+    // 监听注册信息，当验证码为4位时，启用注册按钮
+    'registeredInfo.captcha': {
+      handler: function (captcha) {
+        if (captcha.length === 4) {
+          this.WhetherToDisableRegistrationBtn = false
+        } else {
+          this.WhetherToDisableRegistrationBtn = true
+        }
+      }
+    },
+    // 监听注册信息，当手机号为11位时，启用发送验证码按钮
+    'registeredInfo.phone': {
+      handler: function (phone) {
+        if (phone.length === 11) {
+          this.WhetherToDisableSendTheVerificationCodeBtn = false
+        } else {
+          this.WhetherToDisableSendTheVerificationCodeBtn = true
+        }
       }
     }
   },
