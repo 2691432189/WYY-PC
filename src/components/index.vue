@@ -101,6 +101,20 @@
             > {{ userInfo.name?userInfo.name:'未登录' }}</a>
           </el-col>
           <!-- 登录 -->
+          <el-col
+            :span="1"
+            class="login"
+          >
+            <el-button
+              type="danger"
+              size="mini"
+              class="sign-out"
+              v-if="userInfo.name!==''"
+              @click="signOut()"
+            >
+              登出
+            </el-button>
+          </el-col>
         </el-row>
       </el-header>
       <!-- 头部 -->
@@ -281,9 +295,10 @@ export default {
       ifShow: true,
       // 搜索建议列表
       lefaultList: [],
+      // 用户信息
       userInfo: {
-        img: '',
-        name: ''
+        img: window.localStorage.getItem('img') || '',
+        name: window.localStorage.getItem('name') || ''
       },
       // 侧边栏索引
       sidebarIndex: '',
@@ -363,6 +378,7 @@ export default {
           const { data: res } = await this.$http.get('/login/cellphone', {
             params: this.loginInfo
           })
+          console.log(res)
           if (res.code !== 200) return this.$message.error('登录失败')
           this.loginInfo.phone = ''
           this.loginInfo.password = ''
@@ -371,8 +387,7 @@ export default {
             message: '登录成功',
             type: 'success'
           })
-          console.log(res)
-          window.sessionStorage.setItem('token', res.token)
+          // 调用获取登录用户信息
           this.getLoginUserInfo()
         }
       })
@@ -380,8 +395,10 @@ export default {
     // 获取登录用户信息
     async  getLoginUserInfo () {
       const { data: res } = await this.$http.get('/user/account')
-      if (res.profile.nickname) {
-        this.$store.commit('getUserInfo', res)
+      if (res.profile) {
+        window.localStorage.setItem('uid', res.profile.userId)
+        window.localStorage.setItem('img', res.profile.avatarUrl)
+        window.localStorage.setItem('name', res.profile.nickname)
         this.userInfo.img = res.profile.avatarUrl
         this.userInfo.name = res.profile.nickname
         // 调用获取用户歌单方法
@@ -390,9 +407,19 @@ export default {
     },
     // 获取用户歌单方法
     async getUserSongList () {
-      const { data: res } = await this.$http.get('/user/playlist?uid=' + this.$store.state.userinfo.profile.userId)
-      console.log(res)
+      const { data: res } = await this.$http.get('/user/playlist?uid=' + window.localStorage.getItem('uid'))
       this.UserSongList = res.playlist
+    },
+    // 退出登录方法
+    async  signOut () {
+      const { data: res } = await this.$http.get('/logout')
+      if (res.code !== 200) return this.$message.error('退出失败')
+      this.UserSongList = []
+      this.userInfo.img = ''
+      this.userInfo.name = ''
+      window.localStorage.removeItem('uid')
+      window.localStorage.removeItem('img')
+      window.localStorage.removeItem('name')
     },
     // 注册方法
     registered () {
@@ -416,8 +443,8 @@ export default {
     // 调用获取侧边栏索引方法
     this.getSidebarIndex()
   },
-  async created () {
-    this.getLoginUserInfo()
+  created () {
+    this.getUserSongList()
   }
 }
 </script>
@@ -466,9 +493,12 @@ export default {
       color:#fff;
     }
   }
+  .sign-out{
+    transform: translateY(-13px);
+  }
 }
 .el-aside {
-  height: 640px;
+  height: 630px;
   .el-menu {
     height: 100%;
   }
