@@ -530,7 +530,7 @@ export default {
 .index-page {
   margin: 0 auto;
   width: 100%;
-  height: 760px;
+  height: 730px;
   background-color: #ffffff;
 }
 .el-header {
@@ -576,8 +576,10 @@ export default {
 }
 .el-aside {
   height: 630px;
+  border-right: solid 1px #e6e6e6;
   .el-menu {
-    height: 100%;
+    overflow:hidden;
+    border-right: 0px;
   }
   .findMusic {
     margin: 10px 0 10px 20px;

@@ -17,7 +17,7 @@ export default {
 }
 #app{
   background-color: #ccc;
-  min-width: 1200px
+  min-width: 1200px;
 }
 
 </style>
