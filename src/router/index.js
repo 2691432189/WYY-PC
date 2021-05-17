@@ -1,22 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-
+import Index from '../components/index.vue'
+import DiscoverMusic from '../components/index/discoverMusic/discoverMusic.vue' // 发现音乐
+import Video from '../components/index/video/video.vue' // 视频
+import PrivateFM from '../components/index/privateFM/privateFM.vue' // 私人FM
+import Anchor from '../components/index/anchor/anchor.vue' // 直播
+import DetailsPage from '../components/index/detailsPage/detailsPage.vue' // 详情页
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: Index,
+    children: [
+      { path: '/DiscoverMusic', component: DiscoverMusic },
+      { path: '/Video', component: Video },
+      { path: '/PrivateFM', component: PrivateFM },
+      { path: '/Anchor', component: Anchor },
+      { path: '/DetailsPage*', component: DetailsPage }
+    ]
   }
 ]
 

@@ -1,0 +1,13 @@
+.el-menu-item{
+  height: 43px;
+  line-height: 43px;
+}
+/* 隐藏滑动条 */
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+::-webkit-scrollbar {
+  width: 0 !important;height: 0;
+}
+
+
