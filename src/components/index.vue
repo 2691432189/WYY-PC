@@ -359,7 +359,7 @@ export default {
       WhetherToDisableRegistrationBtn: true,
       // 是否禁用发送验证码按钮
       WhetherToDisableSendTheVerificationCodeBtn: true,
-      // 播放控件
+      // 音乐播放控件
       audio: [
         {
           name: 'STYX HELIX',
