@@ -1,4 +1,5 @@
-el-aside .el-menu-item{
+/* 侧边栏每一个item高度 */
+.el-aside .el-menu-item{
   height: 43px;
   line-height: 43px;
 }
@@ -7,7 +8,8 @@ el-aside .el-menu-item{
   width: 0 !important;
 }
 ::-webkit-scrollbar {
-  width: 0 !important;height: 0;
+  width: 0 !important;
+  height: 0;
 }
 .aplayer{
   margin-top: 3px !important;

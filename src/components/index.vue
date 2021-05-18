@@ -416,7 +416,9 @@ export default {
     },
     // 储存侧边栏索引，防止刷新
     select (index) {
-      localStorage.setItem('index', index)
+      localStorage.setItem('index', '/' + index.split('/')[1])
+      // 储存发现音乐页面路由，实现切换左侧边栏重设发现音乐页面侧边栏
+      localStorage.setItem('DiscoverMusicPageIndex', '/DiscoverMusic/PersonalRecommendation')
     },
     // 获取侧边栏索引
     getSidebarIndex () {
@@ -553,16 +555,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// 主体页面
 .index-page {
   margin: 0 auto;
   width: 100%;
   height: 730px;
   background-color: #ffffff;
 }
+// 头部
 .el-header {
   background-color: #ec4141;
   color: #fff;
   font-size: 20px;
+  // 前进后退和搜索
   .el-col {
     height: 60px;
     line-height: 60px;
@@ -586,9 +591,11 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+  // 登录
   .login{
   margin-top: 12px;
   }
+  // 用户名
   .userName{
     font-size: 14px;
     a{
@@ -596,10 +603,12 @@ export default {
       color:#fff;
     }
   }
+  // 退出登录按钮
   .sign-out{
     transform: translateY(-13px);
   }
 }
+// 侧边栏
 .el-aside {
   height: 620px;
   border-right: solid 1px #e6e6e6;
@@ -612,7 +621,15 @@ export default {
     color: #ccc;
     font-size: 14px;
   }
+  // 每一个标签
+  .el-menu-item {
+  overflow: hidden;
+  white-space: nowrap;
+  /*当文本溢出包含元素时，以省略号表示超出的文本*/
+  text-overflow: ellipsis;
+  }
 }
+// 播放栏控件
 .el-footer {
   box-sizing: border-box;
   border-top: 1px solid #ccc;
@@ -620,16 +637,12 @@ export default {
     width: 100%;
   }
 }
-.el-menu {
-  margin-bottom: 5px;
-}
-.el-menu-item {
-  overflow: hidden;
-  white-space: nowrap;
-  /*当文本溢出包含元素时，以省略号表示超出的文本*/
-  text-overflow: ellipsis;
-}
+// 登录注册按钮
 .loginBtn {
   margin-left: 82%;
+}
+// 注意内容区域
+.el-main{
+  padding: 0px 20px 0px;
 }
 </style>
