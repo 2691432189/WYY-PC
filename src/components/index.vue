@@ -145,8 +145,8 @@
               <i class="el-icon-arrow-down" />
             </div>
             <el-menu-item
-              :index="'/DetailsPage'+item.id"
-              v-for="item in UserSongList"
+              :index="'/DetailsPage'+index+'/'+item.id"
+              v-for="(item,index) in UserSongList"
               :key="item.id"
             >
               <span slot="title">{{ item.name }}</span>
@@ -432,7 +432,6 @@ export default {
           const { data: res } = await this.$http.get('/login/cellphone', {
             params: this.loginInfo
           })
-          console.log(res)
           if (res.code !== 200) return this.$message.error('登录失败')
           this.loginInfo.phone = ''
           this.loginInfo.password = ''
@@ -549,7 +548,17 @@ export default {
     this.getSidebarIndex()
   },
   created () {
+    // 调用获取用户歌单
     this.getUserSongList()
+  },
+  mounted () {
+    // 监听本地储存的值变化
+    window.addEventListener('setItem', (e) => {
+      if (e.key === 'butCountNum') {
+        // 调用获取用户歌单方法
+        this.getUserSongList()
+      }
+    })
   }
 }
 </script>
@@ -629,6 +638,7 @@ export default {
   text-overflow: ellipsis;
   }
 }
+
 // 播放栏控件
 .el-footer {
   box-sizing: border-box;

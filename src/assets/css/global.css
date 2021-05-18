@@ -3,6 +3,12 @@
   height: 43px;
   line-height: 43px;
 }
+/* 主体内容区 */
+.mainBody{
+  overflow: auto;
+  height: 560px;
+  padding: 0 80px;
+}
 /* 隐藏滑动条 */
 ::-webkit-scrollbar {
   width: 0 !important;
@@ -11,8 +17,9 @@
   width: 0 !important;
   height: 0;
 }
+/* 播放控件 */
 .aplayer{
-  margin-top: 3px !important;
+  margin-top: 6px !important;
 }
 /* 曲名歌手样式 */
 .el-footer .aplayer .aplayer-info .aplayer-music {

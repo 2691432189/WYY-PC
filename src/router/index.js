@@ -15,6 +15,7 @@ import LatestMusic from '../components/index/discoverMusic/LatestMusic/LatestMus
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '/', redirect: '/DiscoverMusic' },
   {
     path: '/',
     component: Index,
@@ -40,7 +41,7 @@ const routes = [
       // 直播
       { path: '/Anchor', component: Anchor },
       // 详情页
-      { path: '/DetailsPage*', component: DetailsPage }
+      { path: '/DetailsPage*/:id', component: DetailsPage, props: true }
     ]
   }
 ]
