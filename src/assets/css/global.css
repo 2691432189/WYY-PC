@@ -1,4 +1,4 @@
-.el-menu-item{
+el-aside .el-menu-item{
   height: 43px;
   line-height: 43px;
 }
@@ -8,6 +8,33 @@
 }
 ::-webkit-scrollbar {
   width: 0 !important;height: 0;
+}
+.aplayer{
+  margin-top: 3px !important;
+}
+/* 曲名歌手样式 */
+.el-footer .aplayer .aplayer-info .aplayer-music {
+  width: 25%;
+}
+/* 音乐图片 */
+.el-footer .aplayer.aplayer-withlrc .aplayer-pic {
+  height: 60px;
+  width: 60px;
+}
+/* 歌词高度 */
+.el-footer .aplayer .aplayer-lrc {
+  height: 20px;
+  margin: -33px 0 7px;
+}
+/* 歌词 */
+.el-footer .aplayer .aplayer-lrc .aplayer-lrc-contents {
+  width: 87%;
+  width: 75%;
+  margin-left: 25%;
+}
+.el-footer .aplayer.aplayer-withlrc .aplayer-info {
+  margin-left: 60px;
+  height: 60px;
 }
 
 

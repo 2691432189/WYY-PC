@@ -162,12 +162,14 @@
       </el-container>
       <!-- 下播放栏 -->
       <el-footer>
-        Footer
+        <aplayer
+          :audio="audio"
+          :lrc-type="3"
+        />
       </el-footer>
       <!-- 下播放栏 -->
     </el-container>
     <!-- 登录对话框 -->
-
     <el-dialog
       :visible.sync="whetherShowLoginDialogBox"
       width="30%"
@@ -356,7 +358,30 @@ export default {
       // 是否禁用注册按钮
       WhetherToDisableRegistrationBtn: true,
       // 是否禁用发送验证码按钮
-      WhetherToDisableSendTheVerificationCodeBtn: true
+      WhetherToDisableSendTheVerificationCodeBtn: true,
+      audio: [
+        {
+          name: 'STYX HELIX',
+          artist: '纳豆',
+          url: 'http://m7.music.126.net/20210518102441/1d91f532c903bc987ed2430ead8fb07f/ymusic/db2e/5e0f/6072/102f828049576789c4746b705da293cc.mp3',
+          cover: 'https://p2.music.126.net/zS92B4iboeu50sEkXBeLfA==/1400777824444934.jpg', // prettier-ignore
+          lrc: 'https://cdn.moefe.org/music/lrc/thing.lrc'
+        },
+        {
+          name: 'Stay Alive',
+          artist: '泠鸢yousa',
+          url: 'http://m8.music.126.net/20210518102745/4a6b583b08f2235922caa37ca051bd26/ymusic/97b1/ed24/31d6/c63abbf19bebc007a06c973ce06281d1.mp3',
+          cover: 'https://p2.music.126.net/AAq1qOhfyrClGK1mg3mGYQ==/18776360067593424.jpg', // prettier-ignore
+          lrc: 'https://cdn.moefe.org/music/lrc/kyoukiranbu.lrc'
+        },
+        {
+          name: 'Redo',
+          artist: 'Hanser',
+          url: 'http://m8.music.126.net/20210518102939/6da72f1342f03dbfe9caea22c2f3bfe8/ymusic/37f5/6b21/87b2/24a2352671a3208cdd0dd63bfbc65f10.mp3',
+          cover: 'https://p1.music.126.net/UE0lZwuiYahnGO_JT_dddQ==/1377688078403834.jpg', // prettier-ignore
+          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
+        }
+      ]
 
     }
   },
@@ -575,7 +600,7 @@ export default {
   }
 }
 .el-aside {
-  height: 630px;
+  height: 620px;
   border-right: solid 1px #e6e6e6;
   .el-menu {
     overflow:hidden;
@@ -588,7 +613,11 @@ export default {
   }
 }
 .el-footer {
+  box-sizing: border-box;
   border-top: 1px solid #ccc;
+  .aplayer {
+    width: 100%;
+  }
 }
 .el-menu {
   margin-bottom: 5px;

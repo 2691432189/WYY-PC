@@ -5,8 +5,15 @@ import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
 
+import APlayer from '@moefe/vue-aplayer'
+
 // 导入axios包
 import axios from 'axios'
+
+Vue.use(APlayer, {
+  defaultCover: 'https://github.com/u3u.png',
+  productionTip: true
+})
 
 Vue.prototype.$http = axios
 axios.defaults.baseURL = 'http://localhost:3000'
