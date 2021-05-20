@@ -118,7 +118,7 @@
         </el-row>
       </el-header>
       <!-- 头部 -->
-      <el-container>
+      <el-container :class="{bodyHeight:onListShowHide}">
         <!-- 侧边栏 -->
         <el-aside width="200px">
           <el-menu
@@ -166,7 +166,10 @@
           :audio="audio"
           :lrc-type="0"
           ref="aplayer"
-          :autoplay="true"
+          :list-max-height="150"
+          @listShow="handleEvent"
+          @listHide="handleEvent"
+          :list-folded="true"
         />
       </el-footer>
       <!-- 下播放栏 -->
@@ -363,7 +366,8 @@ export default {
       // 是否禁用发送验证码按钮
       WhetherToDisableSendTheVerificationCodeBtn: true,
       // 音乐播放控件
-      audio: []
+      audio: [],
+      onListShowHide: false
     }
   },
   methods: {
@@ -396,9 +400,10 @@ export default {
     },
     // 储存侧边栏索引，防止刷新
     select (index) {
-      localStorage.setItem('index', '/' + index.split('/')[1])
-      // 储存发现音乐页面路由，实现切换左侧边栏重设发现音乐页面侧边栏
-      localStorage.setItem('DiscoverMusicPageIndex', '/DiscoverMusic/PersonalRecommendation')
+      if (index === '/DiscoverMusic/PersonalRecommendation') {
+        index = '/' + index.split('/')[1]
+      }
+      localStorage.setItem('index', index)
     },
     // 获取侧边栏索引
     getSidebarIndex () {
@@ -486,8 +491,11 @@ export default {
           // if (res.code !== 200) return this.$message.error('退出失败')
         }
       })
+    },
+    // 控制播放栏展开/关闭
+    handleEvent () {
+      this.onListShowHide = !this.onListShowHide
     }
-
   },
   watch: {
     // 监听搜索框，判断显示推荐或者关键词
@@ -528,9 +536,9 @@ export default {
   created () {
     // 调用获取用户歌单
     this.getUserSongList()
-    window.localStorage.removeItem('aplayer-setting')
   },
   mounted () {
+    this.$refs.aplayer.hideList()
     // 监听本地储存的值变化
     // 注:主要用于收藏/取消歌单后重新获取歌单列表，但因为某种原因重新获取的歌单没有变化,应该是
     // 服务器延迟的原因，暂时并没有什么好的解决方法
@@ -543,10 +551,11 @@ export default {
             this.$refs.aplayer.switch(music * 1)
             window.localStorage.removeItem('currentlyPlayingMusic')
           } else {
-            this.$refs.aplayer.switch(this.audio[0].id)
+            this.$refs.aplayer.switch(0)
           }
-        }, 50)
+        }, 200)
       }
+      this.$refs.aplayer.play()
     })
   }
 }
@@ -645,5 +654,8 @@ export default {
   padding: 0px 20px 0px;
   overflow: auto;
   height: 620px;
+}
+.bodyHeight{
+  height: 460px !important;
 }
 </style>

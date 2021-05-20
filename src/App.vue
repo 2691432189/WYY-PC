@@ -6,7 +6,11 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  beforCreate () {
+    window.localStorage.removeItem('aplayer-setting')
+    console.log(1111)
+  }
 }
 </script>
 

@@ -4,7 +4,8 @@
     <el-backtop
       target=".body"
       style="right: 40px; color:red;"
-      :bottom="90"
+      :bottom="250"
+      class="backtop"
     />
     <!-- 回到顶部 -->
     <!-- 信息栏 -->
@@ -151,16 +152,102 @@
       </el-tab-pane>
       <!-- 歌曲列表 -->
       <el-tab-pane
-        label="评论"
-        name="second"
+        :label="`评论(${commentList.total})`"
+        name="cover"
       >
-        配置管理
+        <!-- 评论列表 -->
+        <div
+          class="commentList"
+          v-for="(item,index) in commentList.comments"
+          :key="index"
+        >
+          <!-- 评论者头像 -->
+          <el-image
+            style="width: 40px; height: 40px; border-radius: 40px;"
+            :src="item.user.avatarUrl"
+            fit="cover"
+          />
+          <!-- 评论者头像 -->
+          <span>
+            <!-- 评论 -->
+            <div class="comment">
+              <span>{{ item.user.nickname }}: </span>
+              <span>{{ item.content }}</span>
+            </div>
+            <!-- 评论 -->
+            <!-- 回复 -->
+            <div
+              class="comment comments"
+              v-for="(item1,index1) in item.beReplied"
+              :key="index1"
+            >
+              <span>@{{ item1.user.nickname }}: </span>
+              <span>{{ item1.content }}</span>
+            </div>
+            <!-- 回复 -->
+            <!-- 时间 -->
+            <div class="time">{{ $filter(item.time) }}</div>
+            <!-- 时间 -->
+          </span>
+        </div>
+        <div
+          v-show="commentList.comments.length===0?true:false"
+          class="commentIsAir"
+        >
+          当前评论为空哦~
+        </div>
+        <!-- 评论列表 -->
+        <!-- 分页 -->
+        <el-pagination
+          v-show="commentList.comments.length===0?false:true"
+          layout="prev, pager, next"
+          :total="commentList.total"
+          :page-size="50"
+          :current-page="commentList.cnum+1"
+          @current-change="commentCurrentChange"
+        />
+        <!-- 分页 -->
       </el-tab-pane>
       <el-tab-pane
         label="收藏者"
         name="third"
       >
-        角色管理
+        <el-row :gutter="20">
+          <el-col
+            :span="8"
+            v-for="(item, index) in collectorList.subscribers"
+            :key="index"
+            class="collectorList"
+          >
+            <!-- 歌单收藏者头像 -->
+            <el-image
+              style="width: 100px; height: 100px; border-radius: 100px;"
+              :src="item.avatarUrl"
+              fit="cover"
+            />
+            <!-- 歌单收藏者头像 -->
+            <div>
+              <div>{{ item.nickname }}: </div>
+              <div>{{ item.signature }}</div>
+            </div>
+          </el-col>
+        </el-row>
+        <div
+          v-show="collectorList.subscribers.length===0?true:false"
+          class="commentIsAir"
+        >
+          当前没有人收藏该歌单哦~
+        </div>
+        <!-- 分页 -->
+        <el-pagination
+          v-show="collectorList.subscribers.length===0?false:true"
+          layout="prev, pager, next"
+          :total="collectorList.total"
+          :page-size="51"
+          :current-page="collectorPage"
+          @current-change="collectorCurrentChange"
+        />
+        <!-- 分页 -->
       </el-tab-pane>
     </el-tabs>
     <!-- 切换栏 -->
@@ -188,7 +275,14 @@ export default {
       //  用户名
       userName: window.localStorage.getItem('name'),
       // 喜欢音乐列表
-      LikeMusicList: []
+      LikeMusicList: [],
+      // 评论列表
+      commentList: [],
+      // 歌单收藏者列表
+      collectorList: {},
+      // 歌单收藏者当前页
+      collectorPage: 1
+
     }
   },
   methods: {
@@ -202,7 +296,7 @@ export default {
       this.getMusicUrl()
     },
     // 收藏或取消收藏方法
-    async favoriteOrUnfavorite (id) {
+    favoriteOrUnfavorite (id) {
       this.$http.get(`/playlist/subscribe?t=${id}&id=${this.id}`)
         .then((res) => {
           this.detailsPageInfo.subscribed = !this.detailsPageInfo.subscribed
@@ -284,12 +378,44 @@ export default {
       }
       // 调用获取喜欢音乐列表方法
       this.getLikeMusicList()
+    },
+    // 获取评论列表
+    async  getCommentList (page) {
+      const { data: res } = await this.$http.get(`/comment/playlist?id=${this.id}&limit=50&offset=${page - 1 || 0}`)
+      if (res.code !== 200) return this.$message.error('获取歌单评论列表失败')
+      res.comments.reverse()
+      this.commentList = res
+    },
+    // 获取歌单收藏列表
+    async  getCollectorList (page) {
+      const { data: res } = await this.$http.get(`/playlist/subscribers?id=${this.id}&limit=51&offset=${page - 1 || 0}`)
+      if (res.code !== 200) return this.$message.error('获取歌单列表失败')
+      this.collectorList = res
+      this.collectorPage = page
+    },
+    // 评论翻页
+    commentCurrentChange (page) {
+      this.getCommentList(page)
+      // 翻页后自动回到顶部
+      window.document.querySelector('.backtop').click()
+    },
+    // 歌单收藏者翻页
+    collectorCurrentChange (page) {
+      this.getCollectorList(page)
+      // 翻页后自动回到顶部
+      window.document.querySelector('.backtop').click()
     }
   },
   watch: {
     id: function name (params) {
       // 调用获取歌单详细信息方法
       this.getDetailsPage()
+      // 调用获取评论列表
+      this.getCommentList()
+      // 调用获取喜欢音乐列表方法
+      this.getLikeMusicList()
+      // 调用获取歌单收藏列表
+      this.getCollectorList()
     }
   },
   computed: {
@@ -299,13 +425,16 @@ export default {
       return true
     }
   },
-  mounted () {
+  created () {
     // 调用获取歌单详细信息方法
     this.getDetailsPage()
+    // 调用获取评论列表
+    this.getCommentList()
     // 调用获取喜欢音乐列表方法
     this.getLikeMusicList()
+    // 调用获取歌单收藏列表
+    this.getCollectorList()
   }
-
 }
 </script>
 
@@ -377,6 +506,75 @@ export default {
     }
     .likeBtn {
       color:red;
+    }
+  }
+}
+// 评论列表
+.commentList{
+  border-bottom: 1px #ccc solid;
+  padding: 20px 0;
+  position: relative;
+  margin-bottom: 30px;
+  // 评论者头像
+  .el-image{
+      position: absolute;
+      top: 20px;
+    }
+  >span{
+    width: 90%;
+    display: inline-block;
+    padding-left: 55px;
+    // 评论
+    .comment{
+      font-size: 13px;
+      span:nth-child(1){
+        color: #537eaf;
+      }
+       span:nth-child(2){
+        color: #52504e;
+      }
+    }
+    // 评论回复
+    .comments{
+      margin: 5px 0 0 10px;
+      padding:5px;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+    // 评论时间
+    .time{
+      padding-top: 10px;
+      color: #ccc;
+      font-size: 13px;
+    }
+  }
+}
+// 歌单收藏者列表
+.collectorList{
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  >div{
+    >div{
+      padding-left: 15px;
+      width: 260px;
+      // 歌单收藏者姓名
+      &:nth-child(1){
+      font-size: 14px;
+      color: #000000;
+      }
+      // 歌单收藏者签名
+      &:nth-child(2){
+        padding-top: 10px;
+        font-size: 12px;
+        color: #373737;
+        overflow : hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
     }
   }
 }

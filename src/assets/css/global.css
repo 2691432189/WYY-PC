@@ -1,9 +1,9 @@
 *{
   -moz-user-select:none; /*火狐*/
-      -webkit-user-select:none; /*webkit浏览器*/
-      -ms-user-select:none; /*IE10*/
-      -khtml-user-select:none; /*早期浏览器*/
-      user-select:none;
+  -webkit-user-select:none; /*webkit浏览器*/
+  -ms-user-select:none; /*IE10*/
+  -khtml-user-select:none; /*早期浏览器*/
+  user-select:none;
 }
 /* 侧边栏每一个item高度 */
 .el-aside .el-menu-item{
@@ -69,4 +69,7 @@
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
-
+/* 去除底部盒子边框线 */
+.el-footer{
+  border-top: 0px !important;
+}
