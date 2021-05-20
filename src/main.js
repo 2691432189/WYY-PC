@@ -68,6 +68,7 @@ Vue.prototype.$addStorageEvent = function (type, key, data) {
   }
 }
 
+// 将数字转成以万结尾
 Vue.prototype.$convert = nums => {
   var num = nums * 1
   num = Number(num)
@@ -79,6 +80,15 @@ Vue.prototype.$convert = nums => {
   } else {
     return (num / 10000).toFixed(2) + '万'
   }
+}
+
+// 将毫秒转为分秒
+Vue.prototype.$times = number => {
+  number = number / 1000
+  var minute = parseInt(number / 60)
+  var second = parseInt(number % 60)
+  if ((second + '').length !== 2) { second = second + '0' }
+  return minute + ':' + second
 }
 
 new Vue({

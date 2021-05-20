@@ -1,3 +1,10 @@
+*{
+  -moz-user-select:none; /*火狐*/
+      -webkit-user-select:none; /*webkit浏览器*/
+      -ms-user-select:none; /*IE10*/
+      -khtml-user-select:none; /*早期浏览器*/
+      user-select:none;
+}
 /* 侧边栏每一个item高度 */
 .el-aside .el-menu-item{
   height: 43px;
@@ -18,32 +25,48 @@
   height: 0;
 }
 /* 播放控件 */
-.aplayer{
+/* .aplayer{
   margin-top: 6px !important;
-}
+} */
 /* 曲名歌手样式 */
-.el-footer .aplayer .aplayer-info .aplayer-music {
+/* .el-footer .aplayer .aplayer-info .aplayer-music {
   width: 25%;
-}
+} */
 /* 音乐图片 */
-.el-footer .aplayer.aplayer-withlrc .aplayer-pic {
+/* .el-footer .aplayer.aplayer-withlrc .aplayer-pic {
   height: 60px;
   width: 60px;
-}
+} */
 /* 歌词高度 */
-.el-footer .aplayer .aplayer-lrc {
+/* .el-footer .aplayer .aplayer-lrc {
   height: 20px;
   margin: -33px 0 7px;
-}
+} */
 /* 歌词 */
-.el-footer .aplayer .aplayer-lrc .aplayer-lrc-contents {
+/* .el-footer .aplayer .aplayer-lrc .aplayer-lrc-contents {
   width: 87%;
   width: 75%;
   margin-left: 25%;
-}
-.el-footer .aplayer.aplayer-withlrc .aplayer-info {
+} */
+/* .el-footer .aplayer.aplayer-withlrc .aplayer-info {
   margin-left: 60px;
   height: 60px;
+} */
+/* 歌单页切换栏样式 */
+.detailsPageTabs .el-tabs__nav-wrap::after{
+  height: 0px;
 }
-
+/* 歌单页切换栏被选中的样式 */
+.detailsPageTabs .is-active{
+  color: rgb(0, 0, 0) !important;
+  font-weight: 700;
+}
+/* 歌单页音乐列表每行每列溢出隐藏 */
+.detailsPageTabs .cell{
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
 

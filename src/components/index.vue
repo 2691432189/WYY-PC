@@ -164,7 +164,9 @@
       <el-footer>
         <aplayer
           :audio="audio"
-          :lrc-type="3"
+          :lrc-type="0"
+          ref="aplayer"
+          :autoplay="true"
         />
       </el-footer>
       <!-- 下播放栏 -->
@@ -286,6 +288,7 @@
         >
           注册
         </el-button>
+        {{ audioList }}
       </el-card>
       <!-- 注册卡片 -->
     </el-dialog>
@@ -360,30 +363,7 @@ export default {
       // 是否禁用发送验证码按钮
       WhetherToDisableSendTheVerificationCodeBtn: true,
       // 音乐播放控件
-      audio: [
-        {
-          name: 'STYX HELIX',
-          artist: '纳豆',
-          url: 'http://m7.music.126.net/20210518102441/1d91f532c903bc987ed2430ead8fb07f/ymusic/db2e/5e0f/6072/102f828049576789c4746b705da293cc.mp3',
-          cover: 'https://p2.music.126.net/zS92B4iboeu50sEkXBeLfA==/1400777824444934.jpg', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/thing.lrc'
-        },
-        {
-          name: 'Stay Alive',
-          artist: '泠鸢yousa',
-          url: 'http://m8.music.126.net/20210518102745/4a6b583b08f2235922caa37ca051bd26/ymusic/97b1/ed24/31d6/c63abbf19bebc007a06c973ce06281d1.mp3',
-          cover: 'https://p2.music.126.net/AAq1qOhfyrClGK1mg3mGYQ==/18776360067593424.jpg', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kyoukiranbu.lrc'
-        },
-        {
-          name: 'Redo',
-          artist: 'Hanser',
-          url: 'http://m8.music.126.net/20210518102939/6da72f1342f03dbfe9caea22c2f3bfe8/ymusic/37f5/6b21/87b2/24a2352671a3208cdd0dd63bfbc65f10.mp3',
-          cover: 'https://p1.music.126.net/UE0lZwuiYahnGO_JT_dddQ==/1377688078403834.jpg', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        }
-      ]
-
+      audio: []
     }
   },
   methods: {
@@ -486,7 +466,6 @@ export default {
     // 注册方法
     registered () {
       this.$refs.registeredFormRef.validate(async (valid) => {
-        var res = {}
         if (valid) {
           this.$http.get('/register/cellphone', {
             params: this.registeredInfo
@@ -506,7 +485,6 @@ export default {
 
           // if (res.code !== 200) return this.$message.error('退出失败')
         }
-        console.log(res)
       })
     }
 
@@ -550,13 +528,24 @@ export default {
   created () {
     // 调用获取用户歌单
     this.getUserSongList()
+    window.localStorage.removeItem('aplayer-setting')
   },
   mounted () {
     // 监听本地储存的值变化
+    // 注:主要用于收藏/取消歌单后重新获取歌单列表，但因为某种原因重新获取的歌单没有变化,应该是
+    // 服务器延迟的原因，暂时并没有什么好的解决方法
     window.addEventListener('setItem', (e) => {
       if (e.key === 'butCountNum') {
-        // 调用获取用户歌单方法
-        this.getUserSongList()
+        var music = window.localStorage.getItem('currentlyPlayingMusic')
+        this.audio = this.$store.state.audioList
+        window.setTimeout(() => {
+          if (music) {
+            this.$refs.aplayer.switch(music * 1)
+            window.localStorage.removeItem('currentlyPlayingMusic')
+          } else {
+            this.$refs.aplayer.switch(this.audio[0].id)
+          }
+        }, 50)
       }
     })
   }
@@ -654,5 +643,7 @@ export default {
 // 注意内容区域
 .el-main{
   padding: 0px 20px 0px;
+  overflow: auto;
+  height: 620px;
 }
 </style>

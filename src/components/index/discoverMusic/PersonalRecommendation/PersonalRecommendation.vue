@@ -70,7 +70,6 @@ export default {
     async getReCommendedPlaylist () {
       const { data: res } = await this.$http.get('/personalized?limit=8')
       if (res.code !== 200) return this.$message.error('获取推荐歌单失败')
-      console.log(res)
       this.ReCommendedPlaylist = res.result
     },
     // 跳转歌单详情页

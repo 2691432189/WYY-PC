@@ -1,7 +1,11 @@
 import Vue from 'vue'
-import { Button, Header, Container, Aside, Main, Footer, Menu, Submenu, MenuItemGroup, Avatar, Row, Col, Input, Popover, MenuItem, Message, Link, Dialog, Card, Form, FormItem, Carousel, CarouselItem, Image } from 'element-ui'
+import { Button, Icon, Header, Container, Aside, Main, Footer, Menu, Submenu, MenuItemGroup, Avatar, Row, Col, Input, Popover, MenuItem, Message, Link, Dialog, Card, Form, FormItem, Carousel, CarouselItem, Image, Tabs, TabPane, Table, TableColumn, Backtop } from 'element-ui'
 
 Vue.use(Button)
+Vue.use(Icon)
+Vue.use(Backtop)
+Vue.use(Table)
+Vue.use(TableColumn)
 Vue.use(Header)
 Vue.use(Container)
 Vue.use(Aside)
@@ -24,4 +28,6 @@ Vue.use(FormItem)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.use(Image)
+Vue.use(Tabs)
+Vue.use(TabPane)
 Vue.prototype.$message = Message
