@@ -10,6 +10,9 @@ export default new Vuex.Store({
   mutations: {
     addmusic (state, data) {
       state.audioList = data
+    },
+    pushMusic (state, data) {
+      state.audioList.unshift(data)
     }
   },
   getters: {

@@ -12,17 +12,8 @@
       <el-menu-item index="/DiscoverMusic/SongList">
         歌单
       </el-menu-item>
-      <el-menu-item index="/DiscoverMusic/RadioStation">
-        主播电台
-      </el-menu-item>
       <el-menu-item index="/DiscoverMusic/Leaderboard">
         排行榜
-      </el-menu-item>
-      <el-menu-item index="/DiscoverMusic/Singer">
-        歌手
-      </el-menu-item>
-      <el-menu-item index="/DiscoverMusic/LatestMusic">
-        最新音乐
       </el-menu-item>
     </el-menu>
     <router-view />

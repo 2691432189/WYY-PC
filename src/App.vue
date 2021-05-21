@@ -20,8 +20,10 @@ export default {
   padding: 0;
 }
 #app{
+  margin: 0 auto;
   background-color: #ccc;
-  min-width: 1200px;
+  min-width: 1470px;
+  max-width: 1536px;
 }
 
 </style>

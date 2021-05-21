@@ -182,17 +182,17 @@
       <el-menu
         class="el-menu-demo"
         mode="horizontal"
-        :default-active="ShowLoginOrRegistered+''"
+        :default-active="showLoginOrRegistered+''"
       >
         <el-menu-item
           index="true"
-          @click="ShowLoginOrRegistered=true"
+          @click="showLoginOrRegistered=true"
         >
           登录
         </el-menu-item>
         <el-menu-item
           index="false"
-          @click="ShowLoginOrRegistered=false"
+          @click="showLoginOrRegistered=false"
         >
           注册/修改密码用户名
         </el-menu-item>
@@ -200,7 +200,7 @@
       <!-- 登录卡片 -->
       <el-card
         class="box-card"
-        v-if="ShowLoginOrRegistered"
+        v-if="showLoginOrRegistered"
       >
         <el-form
           size="mini"
@@ -258,8 +258,8 @@
             >
               <el-button
                 slot="append"
-                @click="SendTheVerificationCode"
-                :disabled="WhetherToDisableSendTheVerificationCodeBtn"
+                @click="sendTheVerificationCode"
+                :disabled="whetherToDisableSendTheVerificationCodeBtn"
               >
                 发送验证码
               </el-button>
@@ -286,7 +286,7 @@
         <el-button
           type="primary"
           class="loginBtn"
-          :disabled="WhetherToDisableRegistrationBtn"
+          :disabled="whetherToDisableRegistrationBtn"
           @click="registered"
         >
           注册
@@ -331,7 +331,7 @@ export default {
       // 是否显示登录/注册对话框
       whetherShowLoginDialogBox: false,
       // 判断显示登录/注册页面
-      ShowLoginOrRegistered: true,
+      showLoginOrRegistered: true,
       // 登录信息
       loginInfo: {
         phone: '',
@@ -362,9 +362,9 @@ export default {
       // 用户歌单列表
       UserSongList: [],
       // 是否禁用注册按钮
-      WhetherToDisableRegistrationBtn: true,
+      whetherToDisableRegistrationBtn: true,
       // 是否禁用发送验证码按钮
-      WhetherToDisableSendTheVerificationCodeBtn: true,
+      whetherToDisableSendTheVerificationCodeBtn: true,
       // 音乐播放控件
       audio: [],
       onListShowHide: false
@@ -460,7 +460,7 @@ export default {
       window.localStorage.removeItem('name')
     },
     // 发送验证码
-    async  SendTheVerificationCode () {
+    async  sendTheVerificationCode () {
       const { data: res } = await this.$http.get('/captcha/sent?phone=' + this.registeredInfo.phone)
       if (res.code !== 200) return this.$message.error('发送验证码失败')
       this.$message({
@@ -480,7 +480,7 @@ export default {
                 message: '注册成功',
                 type: 'success'
               })
-              this.ShowLoginOrRegistered = true
+              this.showLoginOrRegistered = true
             })
             .catch((error) => {
               if (error.response) {
@@ -510,9 +510,9 @@ export default {
     'registeredInfo.captcha': {
       handler: function (captcha) {
         if (captcha.length === 4) {
-          this.WhetherToDisableRegistrationBtn = false
+          this.whetherToDisableRegistrationBtn = false
         } else {
-          this.WhetherToDisableRegistrationBtn = true
+          this.whetherToDisableRegistrationBtn = true
         }
       }
     },
@@ -520,9 +520,9 @@ export default {
     'registeredInfo.phone': {
       handler: function (phone) {
         if (phone.length === 11) {
-          this.WhetherToDisableSendTheVerificationCodeBtn = false
+          this.whetherToDisableSendTheVerificationCodeBtn = false
         } else {
-          this.WhetherToDisableSendTheVerificationCodeBtn = true
+          this.whetherToDisableSendTheVerificationCodeBtn = true
         }
       }
     }
@@ -617,7 +617,7 @@ export default {
 }
 // 侧边栏
 .el-aside {
-  height: 620px;
+  height: 82vh;
   border-right: solid 1px #e6e6e6;
   .el-menu {
     overflow:hidden;
@@ -642,7 +642,9 @@ export default {
   box-sizing: border-box;
   border-top: 1px solid #ccc;
   .aplayer {
+    margin: 5px 0;
     width: 100%;
+    z-index: 999;
   }
 }
 // 登录注册按钮
@@ -653,9 +655,9 @@ export default {
 .el-main{
   padding: 0px 20px 0px;
   overflow: auto;
-  height: 620px;
+  height: 82vh;
 }
 .bodyHeight{
-  height: 460px !important;
+  height: 63vh !important;
 }
 </style>

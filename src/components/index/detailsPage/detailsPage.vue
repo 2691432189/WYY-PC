@@ -3,7 +3,7 @@
     <!-- 回到顶部 -->
     <el-backtop
       target=".body"
-      style="right: 40px; color:red;"
+      style="right: 10vh; color:red;"
       :bottom="250"
       class="backtop"
     />
@@ -14,7 +14,7 @@
       <el-col :span="4">
         <el-image
           style="width: 100%;border-radius: 10px"
-          :src="detailsPageInfo.coverImgUrl"
+          :src="detailsPageInfo.coverImgUrl+'?param=200y200'"
           fit="cover"
         />
         <!-- 歌单头图 -->
@@ -30,7 +30,7 @@
         <div>
           <el-image
             style="width: 30px; height:30px; border-radius: 30px"
-            :src="detailsPageInfo.creator.avatarUrl"
+            :src="detailsPageInfo.creator.avatarUrl+'?param=50y50'"
             fit="cover"
           />
           <span>{{ detailsPageInfo.creator.nickname }}</span>
@@ -164,7 +164,7 @@
           <!-- 评论者头像 -->
           <el-image
             style="width: 40px; height: 40px; border-radius: 40px;"
-            :src="item.user.avatarUrl"
+            :src="item.user.avatarUrl+'?param=40y40'"
             fit="cover"
           />
           <!-- 评论者头像 -->
@@ -203,7 +203,7 @@
           layout="prev, pager, next"
           :total="commentList.total"
           :page-size="50"
-          :current-page="commentList.cnum+1"
+          :current-page="commentPage"
           @current-change="commentCurrentChange"
         />
         <!-- 分页 -->
@@ -222,7 +222,7 @@
             <!-- 歌单收藏者头像 -->
             <el-image
               style="width: 100px; height: 100px; border-radius: 100px;"
-              :src="item.avatarUrl"
+              :src="item.avatarUrl+'?param=100y100'"
               fit="cover"
             />
             <!-- 歌单收藏者头像 -->
@@ -278,6 +278,8 @@ export default {
       LikeMusicList: [],
       // 评论列表
       commentList: [],
+      // 评论列表当前页
+      commentPage: 1,
       // 歌单收藏者列表
       collectorList: {},
       // 歌单收藏者当前页
@@ -311,9 +313,15 @@ export default {
     // 获取音乐详细信息方法
     async getMusicUrl () {
       var url = ''
+      // 限制请求音乐的的条数
+      var throttling = 99
       this.trackIds.forEach((element, index) => {
-        if (index === this.trackIds.length - 1) {
+        // 限制请求音乐的条数，将每个歌单最大数量限制到150条
+        if (index > throttling) {
+          return false
+        } else if (index === this.trackIds.length - 1 || index === throttling) {
           url = url + element.id
+          console.log(url)
         } else {
           url = url + element.id + ','
         }
@@ -329,7 +337,7 @@ export default {
           name: element.name,
           artist: element.al.name,
           url: '',
-          cover: element.al.picUrl
+          cover: element.al.picUrl + '?param=80y80'
         }
         res.songs[index].index = index
         audio.url = res1.data.find(element1 => {
@@ -383,8 +391,10 @@ export default {
     async  getCommentList (page) {
       const { data: res } = await this.$http.get(`/comment/playlist?id=${this.id}&limit=50&offset=${page - 1 || 0}`)
       if (res.code !== 200) return this.$message.error('获取歌单评论列表失败')
+      // 反转评论列表数组
       res.comments.reverse()
       this.commentList = res
+      this.commentPage = page
     },
     // 获取歌单收藏列表
     async  getCollectorList (page) {
@@ -416,6 +426,8 @@ export default {
       this.getLikeMusicList()
       // 调用获取歌单收藏列表
       this.getCollectorList()
+      // 切换歌单后自动回到顶部
+      window.document.querySelector('.backtop').click()
     }
   },
   computed: {
@@ -568,7 +580,7 @@ export default {
       &:nth-child(2){
         padding-top: 10px;
         font-size: 12px;
-        color: #373737;
+        color: #6b6b6b;
         overflow : hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
