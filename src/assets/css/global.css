@@ -5,6 +5,11 @@
   -khtml-user-select:none; /*早期浏览器*/
   user-select:none;
 }
+/* 去除所有链接默认样式 */
+a {
+  text-decoration:none;
+  color:#333;
+}
 /* 侧边栏每一个item高度 */
 .el-aside .el-menu-item{
   height: 43px;

@@ -658,6 +658,6 @@ export default {
   height: 82vh;
 }
 .bodyHeight{
-  height: 63vh !important;
+  height: 62vh !important;
 }
 </style>

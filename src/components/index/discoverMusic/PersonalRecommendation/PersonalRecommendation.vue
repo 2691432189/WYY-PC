@@ -33,7 +33,7 @@
           <div>
             <el-image
               style="width: 100%; height: 80%; border-radius: 10px"
-              :src="item.picUrl+'?param=200y200'"
+              :src="item.picUrl+'?param=160y160'"
             />
             <i
               class="el-icon-video-play"
@@ -143,13 +143,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-carousel {
+  margin-top: 30px;
+}
   // 推荐歌单
-.reCommendedPlay{
+.reCommendedPlay {
   flex-wrap: wrap;
   // 歌单名
   .el-col{
     margin-top: 30px;
-    .reCommendedPlayName{
+    .reCommendedPlayName {
       margin-bottom: 20px;
       font-size: 13px;
       // 鼠标变小手
@@ -161,12 +164,12 @@ export default {
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
-    div:nth-child(1){
+    div:nth-child(1) {
       // 鼠标变小手
       cursor:pointer;
       position: relative;
       // 图片遮罩层
-      i{
+      i {
         position: absolute;
         top: 0;
         left: 0;
@@ -189,23 +192,23 @@ export default {
   }
 }
 // 最新音乐
-.newMusicTab{
+.newMusicTab {
   margin-top: 20px;
 }
-.newMusic{
-  .el-col{
+.newMusic {
+  .el-col {
     margin: 40px 44px 0 0;
     height: 60px;
     position: relative;
     border-radius: 10px;
     // 鼠标变小手
     cursor:pointer;
-    .newMusicUserInFo{
+    .newMusicUserInFo {
       position: absolute;
       top: 5px;
       left: 70px;
       width: 100%;
-      >div{
+      >div {
         width: 80%;
         // 文字溢出隐藏
         overflow : hidden;
@@ -214,18 +217,18 @@ export default {
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
       }
-      :nth-child(1){
+      :nth-child(1) {
         margin-bottom: 8px;
         font-size: 14px;
         color: rgb(71, 71, 71);
       }
-       :nth-child(2){
+       :nth-child(2) {
         margin-bottom: 8px;
         font-size: 12px;
         color: rgb(122, 122, 122);
       }
     }
-    &:hover{
+    &:hover {
       background-color: #eaeaea;
     }
   }

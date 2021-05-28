@@ -302,7 +302,6 @@ export default {
       this.$http.get(`/playlist/subscribe?t=${id}&id=${this.id}`)
         .then((res) => {
           this.detailsPageInfo.subscribed = !this.detailsPageInfo.subscribed
-          this.$addStorageEvent(2, 'butCountNum', true)
         })
         .catch((error) => {
           if (error.response) {
@@ -321,7 +320,6 @@ export default {
           return false
         } else if (index === this.trackIds.length - 1 || index === throttling) {
           url = url + element.id
-          console.log(url)
         } else {
           url = url + element.id + ','
         }
@@ -389,7 +387,7 @@ export default {
     },
     // 获取评论列表
     async  getCommentList (page) {
-      const { data: res } = await this.$http.get(`/comment/playlist?id=${this.id}&limit=50&offset=${page - 1 || 0}`)
+      const { data: res } = await this.$http.get(`/comment/playlist?id=${this.id}&limit=50&offset=${(page - 1) * 50 || 0}`)
       if (res.code !== 200) return this.$message.error('获取歌单评论列表失败')
       // 反转评论列表数组
       res.comments.reverse()
@@ -398,7 +396,7 @@ export default {
     },
     // 获取歌单收藏列表
     async  getCollectorList (page) {
-      const { data: res } = await this.$http.get(`/playlist/subscribers?id=${this.id}&limit=51&offset=${page - 1 || 0}`)
+      const { data: res } = await this.$http.get(`/playlist/subscribers?id=${this.id}&limit=51&offset=${(page - 1) * 51 || 0}`)
       if (res.code !== 200) return this.$message.error('获取歌单列表失败')
       this.collectorList = res
       this.collectorPage = page
