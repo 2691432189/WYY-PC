@@ -33,6 +33,7 @@
               clearable
               v-popover:popover
               @focus="getHotMusic"
+              @keyup.enter.native="search()"
               size="mini"
               v-model="searchinfo"
             >
@@ -393,10 +394,13 @@ export default {
       this.lefaultList = res.result.songs
     },
     // 搜索方法
-    async search (info) {
-      const res = await this.$http.get('/cloudsearch?keywords= ' + info || this.searchinfo)
+    search (info) {
+      var infos = info || this.searchinfo || null
       this.searchinfo = ''
-      console.log(res)
+      this.$router.push('/Search/' + infos)
+    },
+    aaaaa () {
+      console.log(111111111111111111)
     },
     // 储存侧边栏索引，防止刷新
     select (index) {

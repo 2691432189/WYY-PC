@@ -191,7 +191,7 @@
           </span>
         </div>
         <div
-          v-show="commentList.comments.length===0?true:false"
+          v-show="commentList.total===0?true:false"
           class="commentIsAir"
         >
           当前评论为空哦~
@@ -199,7 +199,7 @@
         <!-- 评论列表 -->
         <!-- 分页 -->
         <el-pagination
-          v-show="commentList.comments.length===0?false:true"
+          v-show="commentList.total===0?false:true"
           layout="prev, pager, next"
           :total="commentList.total"
           :page-size="50"
@@ -233,14 +233,14 @@
           </el-col>
         </el-row>
         <div
-          v-show="collectorList.subscribers.length===0?true:false"
+          v-show="collectorList.total===0?true:false"
           class="commentIsAir"
         >
           当前没有人收藏该歌单哦~
         </div>
         <!-- 分页 -->
         <el-pagination
-          v-show="collectorList.subscribers.length===0?false:true"
+          v-show="collectorList.total===0?false:true"
           layout="prev, pager, next"
           :total="collectorList.total"
           :page-size="51"
