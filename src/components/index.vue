@@ -400,7 +400,7 @@ export default {
     },
     // 储存侧边栏索引，防止刷新
     select (index) {
-      if (index === '/DiscoverMusic/PersonalRecommendation') {
+      if (index === '/DiscoverMusic/PersonalRecommendation' || index === '/DiscoverMusic/SongList' || index === '/DiscoverMusic/Leaderboard') {
         index = '/' + index.split('/')[1]
       }
       localStorage.setItem('index', index)

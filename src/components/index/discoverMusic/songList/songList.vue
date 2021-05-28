@@ -20,7 +20,7 @@
       </div>
     </div>
     <!-- 热门分类 -->
-    <!-- 推荐歌单 -->
+    <!-- 歌单 -->
     <el-row
       :gutter="80"
       type="flex"
@@ -49,7 +49,7 @@
         </div>
       </el-col>
     </el-row>
-    <!-- 推荐歌单 -->
+    <!-- 歌单 -->
     <!-- 分页 -->
     <el-pagination
       layout="prev, pager, next"
@@ -86,7 +86,6 @@ export default {
       const { data: res } = await this.$http.get(`/top/playlist?limit=40&order=hot&cat=${cat || '全部'}&offset=${(page - 1) * 40 || 0}`)
       if (res.code !== 200) return this.$message.error('获取歌单失败')
       this.musicList = res
-      console.log(res)
     },
     // 跳转歌单详情页
     goInfoPage (id) {
@@ -108,6 +107,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// 分类样式
   .hotMusicSortNav {
     margin-bottom: 60px;
     margin-top: 30px;
@@ -135,7 +135,7 @@ export default {
       }
     }
   }
-// 推荐歌单
+// 歌单
 .reCommendedPlay {
   flex-wrap: wrap;
   // 歌单名

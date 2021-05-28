@@ -23,29 +23,7 @@
 export default {
   data () {
     return {
-      // 侧边栏索引
-      // sidebarIndex: ''
     }
-  },
-  methods: {
-    // 储存侧边栏索引，防止刷新
-    // select (index) {
-    //   localStorage.setItem('DiscoverMusicPageIndex', index)
-    // },
-    // 获取侧边栏索引
-    // getSidebarIndex () {
-    //   this.sidebarIndex = localStorage.getItem('DiscoverMusicPageIndex')
-    // }
-  },
-  created () {
-    // 调用获取侧边栏索引方法
-    this.getSidebarIndex()
-  },
-  updated () {
-    // 调用储存侧边栏索引方法
-    this.select(this.$route.path)
-    // 调用获取侧边栏索引方法
-    this.getSidebarIndex()
   }
 }
 </script>
