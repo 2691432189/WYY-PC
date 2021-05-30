@@ -3,8 +3,6 @@ import VueRouter from 'vue-router'
 import Index from '../components/index.vue'
 import DiscoverMusic from '../components/index/discoverMusic/discoverMusic.vue' // 发现音乐
 import Video from '../components/index/video/video.vue' // 视频
-import PrivateFM from '../components/index/privateFM/privateFM.vue' // 私人FM
-import Anchor from '../components/index/anchor/anchor.vue' // 直播
 import DetailsPage from '../components/index/detailsPage/detailsPage.vue' // 歌单详情页
 import PersonalRecommendation from '../components/index/discoverMusic/PersonalRecommendation/PersonalRecommendation.vue' // 个性推荐
 import SongList from '../components/index/discoverMusic/songList/songList.vue' // 歌单
@@ -31,10 +29,6 @@ const routes = [
       },
       // 视频
       { path: '/Video', component: Video },
-      // 私人FM
-      { path: '/PrivateFM', component: PrivateFM },
-      // 直播
-      { path: '/Anchor', component: Anchor },
       // 歌单详情页
       { path: '/DetailsPage*/:id', component: DetailsPage, props: true },
       // 搜索页
@@ -45,6 +39,18 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  if (to.fullPath === '/Video') {
+    const login = window.localStorage.getItem('login')
+    if (login) return next()
+    next('/DiscoverMusic')
+    // this.$message.error('请登录')
+  } else {
+    next()
+  }
 })
 
 export default router

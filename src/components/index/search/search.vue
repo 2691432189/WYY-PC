@@ -181,7 +181,6 @@ export default {
     },
     // 双击播放音乐
     async dblclickPlayMusic (row) {
-      console.log(row)
       const { data: res } = await this.$http.get('/song/url?id=' + row.id)
       if (res.code !== 200) return this.$message.error('获取音乐URL失败')
       var audio = {
@@ -190,7 +189,6 @@ export default {
         url: res.data[0].url,
         cover: row.al.picUrl + '?param=80y80'
       }
-      console.log(audio)
       window.localStorage.setItem('currentlyPlayingMusic', 0)
       this.$store.commit('pushMusic', audio)
       this.$addStorageEvent(1, 'butCountNum', true)

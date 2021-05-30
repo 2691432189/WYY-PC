@@ -135,12 +135,6 @@
             <el-menu-item index="/Video">
               <span slot="title">视频</span>
             </el-menu-item>
-            <el-menu-item index="/Anchor">
-              <span slot="title">直播</span>
-            </el-menu-item>
-            <el-menu-item index="/PrivateFM">
-              <span slot="title">私人FM</span>
-            </el-menu-item>
             <div class="findMusic">
               我的歌单
               <i class="el-icon-arrow-down" />
@@ -441,6 +435,7 @@ export default {
         window.localStorage.setItem('uid', res.profile.userId)
         window.localStorage.setItem('img', res.profile.avatarUrl)
         window.localStorage.setItem('name', res.profile.nickname)
+        window.localStorage.setItem('login', true)
         this.userInfo.img = res.profile.avatarUrl
         this.userInfo.name = res.profile.nickname
         // 调用获取用户歌单方法
@@ -462,6 +457,7 @@ export default {
       window.localStorage.removeItem('uid')
       window.localStorage.removeItem('img')
       window.localStorage.removeItem('name')
+      window.localStorage.removeItem('login')
     },
     // 发送验证码
     async  sendTheVerificationCode () {
