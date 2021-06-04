@@ -8,6 +8,7 @@ import PersonalRecommendation from '../components/index/discoverMusic/PersonalRe
 import SongList from '../components/index/discoverMusic/songList/songList.vue' // 歌单
 import Leaderboard from '../components/index/discoverMusic/Leaderboard/Leaderboard.vue'// 排行榜
 import Search from '../components/index/search/search.vue' // 搜索页
+import CloudDisk from '../components/index/cloudDisk/cloudDisk.vue' // 音乐云盘
 Vue.use(VueRouter)
 
 const routes = [
@@ -32,7 +33,9 @@ const routes = [
       // 歌单详情页
       { path: '/DetailsPage*/:id', component: DetailsPage, props: true },
       // 搜索页
-      { path: '/Search/:info', component: Search, props: true }
+      { path: '/Search/:info', component: Search, props: true },
+      // 音乐云盘
+      { path: '/CloudDisk', component: CloudDisk }
     ]
   }
 ]
@@ -43,7 +46,7 @@ const router = new VueRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.fullPath === '/Video') {
+  if (to.fullPath === '/Video' || to.fullPath === '/CloudDisk') {
     const login = window.localStorage.getItem('login')
     if (login) return next()
     next('/DiscoverMusic')
