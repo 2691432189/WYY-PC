@@ -33,8 +33,36 @@ mounted () {
   }
 ```
 
-### 待解决的问题1
+### 待解决的问题1（已解决）
 
-​     这个歌单列表会在下面展开，暂时还没有好的解决方法，后期完善应该会取消掉这个播放列表，单独做一个播放页
+​     歌单列表会在下面展开，暂时还没有好的解决方法，后期完善应该会取消掉这个播放列表，单独做一个播放页
 
-![](C:\Users\KumikoHomae\Desktop\Snipaste_2021-05-19_08-25-24.png)
+### 请自行指定音乐完整上传地址（音乐云盘）
+
+```js
+// 上传音乐
+    async  httpRequest (file) {
+      var formData = new FormData()
+      formData.append('songFile', file.file)
+      this.$http({
+        method: 'post',
+        // 请自行指定完整上传地址
+        url: `http://localhost:3000/cloud?time=${Date.now()}`,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        data: formData
+      }).then(res => {
+        this.$message({
+          message: '上传成功,可能会有延迟，请稍后尝试刷新',
+          type: 'success'
+        })
+        // 调用获取云盘数据方法
+        this.getMyMusicCloudDisk()
+      }).catch(async err => {
+        this.$message.error('上传失败')
+        console.log(err)
+      })
+    },
+```
+

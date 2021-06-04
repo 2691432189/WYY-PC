@@ -81,7 +81,7 @@ a {
 }
 
 /* 歌单页音乐列表每行每列溢出隐藏 */
-.detailsPageTabs .cell {
+.el-table .cell {
   overflow : hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

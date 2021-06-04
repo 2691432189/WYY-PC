@@ -135,6 +135,9 @@
             <el-menu-item index="/Video">
               <span slot="title">视频</span>
             </el-menu-item>
+            <el-menu-item index="/CloudDisk">
+              <span slot="title">音乐云盘</span>
+            </el-menu-item>
             <div class="findMusic">
               我的歌单
               <i class="el-icon-arrow-down" />
@@ -393,9 +396,6 @@ export default {
       this.searchinfo = ''
       this.$router.push('/Search/' + infos)
     },
-    aaaaa () {
-      console.log(111111111111111111)
-    },
     // 储存侧边栏索引，防止刷新
     select (index) {
       if (index === '/DiscoverMusic/PersonalRecommendation' || index === '/DiscoverMusic/SongList' || index === '/DiscoverMusic/Leaderboard') {
@@ -458,6 +458,7 @@ export default {
       window.localStorage.removeItem('img')
       window.localStorage.removeItem('name')
       window.localStorage.removeItem('login')
+      this.$router.push('/DiscoverMusic')
     },
     // 发送验证码
     async  sendTheVerificationCode () {
