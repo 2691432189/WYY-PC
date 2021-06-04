@@ -136,11 +136,13 @@ export default {
       // 调用获取音乐URL方法
       this.getMusicUrl()
     },
+    // 上传音乐
     async  httpRequest (file) {
       var formData = new FormData()
       formData.append('songFile', file.file)
       this.$http({
         method: 'post',
+        // 请自行指定完整上传地址
         url: `http://localhost:3000/cloud?time=${Date.now()}`,
         headers: {
           'Content-Type': 'multipart/form-data'
