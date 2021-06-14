@@ -37,10 +37,10 @@
       <el-upload
         class="upload-demo"
         :show-file-list="false"
-        :limit="1"
         action=""
         accept=".mp3"
         :http-request="httpRequest"
+        v-loading="loading"
       >
         <el-button
           round
@@ -121,7 +121,10 @@ export default {
       musicUrlList: [],
       // 我的音乐云盘当前页
       myMusicCloudDiskPage: 1,
-      uploadFile: {}
+      // 上传文件
+      uploadFile: {},
+      // 控制是否显示上传加载等待
+      loading: false
     }
   },
   methods: {
@@ -138,12 +141,14 @@ export default {
     },
     // 上传音乐
     async  httpRequest (file) {
+      // 控制是否显示上传加载等待
+      this.loading = true
       var formData = new FormData()
       formData.append('songFile', file.file)
       this.$http({
         method: 'post',
         // 请自行指定完整上传地址
-        url: `http://localhost:3000/cloud?time=${Date.now()}`,
+        url: `http://localhost:3000/cloud?time=${Date.now()}}`,
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -154,10 +159,13 @@ export default {
           type: 'success'
         })
         // 调用获取云盘数据方法
-        this.getMyMusicCloudDisk()
+        // this.getMyMusicCloudDisk()
+        this.loading = false
       }).catch(async err => {
         this.$message.error('上传失败')
         console.log(err)
+        // 控制是否显示上传加载等待
+        this.loading = false
       })
     },
     // 双击播放
