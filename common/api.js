@@ -231,5 +231,41 @@ export default {
         axios.get(`/cloudsearch?keywords= ${info}&type=1000&limit=100&offset=${(page - 1) * 100}`)
       )
     })
+  },
+
+  // 获取热门视频分类方法
+  getHotVideoSort: () => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/video/category/list')
+      )
+    })
+  },
+
+  // 获取视频列表方法
+  getVideoList: (page) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/video/timeline/all?offset=${(page - 1) * 40 || 0}`)
+      )
+    })
+  },
+
+  // 获取分类视频列表方法
+  getVideoGroupList: (id, page) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/video/group?id=${id}&offset=${(page - 1) * 40 || 0}`)
+      )
+    })
+  },
+
+  // 播放视频
+  playVideo: (id) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/video/url?id=${id}`)
+      )
+    })
   }
 }
