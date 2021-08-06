@@ -5,9 +5,6 @@ import store from './store'
 import './assets/css/global.css'
 import APlayer from '@moefe/vue-aplayer'
 
-// 导入axios包
-import axios from 'axios'
-
 // 导入视频组件
 import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
@@ -16,10 +13,6 @@ Vue.use(APlayer, {
   defaultCover: 'https://github.com/u3u.png',
   productionTip: true
 })
-
-Vue.prototype.$http = axios
-axios.defaults.baseURL = 'http://42.193.111.124:8889'
-axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
 
 // 时间格式处理
 Vue.prototype.$filter = timestamp => {
