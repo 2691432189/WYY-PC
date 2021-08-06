@@ -9,13 +9,13 @@
       <div>
         <a
           href="javascript:;"
-          @click="getMusicList('全部')"
+          @click="getSongList('全部')"
         >全部</a>
         <a
           href="javascript:;"
           v-for="(item, index) in hotMusicSortList"
           :key="index"
-          @click="getMusicList(item.name)"
+          @click="getSongList(item.name)"
         >{{ item.name }}</a>
       </div>
     </div>
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import api from '../../../../../common/api'
 export default {
   data () {
     return {
@@ -77,13 +78,13 @@ export default {
   methods: {
     // 获取热门歌单分类方法
     async  getHotMusicSort () {
-      const { data: res } = await this.$http.get('/playlist/hot')
+      const { data: res } = await api.getHotMusicSort()
       if (res.code !== 200) return this.$message.error('获取热门歌单分类失败')
       this.hotMusicSortList = res.tags
     },
     // 获取歌单方法
-    async  getMusicList (cat, page) {
-      const { data: res } = await this.$http.get(`/top/playlist?limit=40&order=hot&cat=${cat || '全部'}&offset=${(page - 1) * 40 || 0}`)
+    async  getSongList (cat, page) {
+      const { data: res } = await api.getSongList(cat, page)
       if (res.code !== 200) return this.$message.error('获取歌单失败')
       this.musicList = res
     },
@@ -94,14 +95,14 @@ export default {
     // 翻页方法
     musicListCurrentChange (page) {
       // 调用获取歌单方法
-      this.getMusicList(this.musicList.cat, page)
+      this.getSongList(this.musicList.cat, page)
     }
   },
   created () {
     // 调用获取热门歌单分类方法
     this.getHotMusicSort()
     // 调用获取歌单方法
-    this.getMusicList()
+    this.getSongList()
   }
 }
 </script>

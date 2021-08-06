@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import api from '../../../../common/api'
 export default {
   data () {
     return {
@@ -130,7 +131,7 @@ export default {
   methods: {
     // 获取云盘数据方法
     async getMyMusicCloudDisk (page) {
-      const { data: res } = await this.$http.get(`/user/cloud?limit=100&offset=${(page - 1) * 100 || 0}`)
+      const { data: res } = await api.getMyMusicCloudDisk(page)
       if (res.code !== 200) return this.$message.error('获取音乐列表失败')
       res.data.forEach((element, index) => {
         element.index = index
@@ -194,10 +195,12 @@ export default {
           url = url + element.songId + ','
         }
       })
-      const { data: res } = await this.$http.get('/song/detail?ids=' + url)
+      // 获取音乐列表
+      const { data: res } = await api.getMusicList(url)
       if (res.code !== 200) return this.$message.error('获取音乐列表失败')
-      const { data: res1 } = await this.$http.get('/song/url?id=' + url)
-      if (res1.code !== 200) return this.$message.error('获取音乐URL失败')
+      //  获取音乐url
+      const { data: req } = await api.getSongUrl(url)
+      if (req.code !== 200) return this.$message.error('获取音乐URL失败')
       // 处理播放列表，整合url
       this.musicUrlList = []
       res.songs.forEach((element, index) => {
@@ -208,7 +211,7 @@ export default {
           cover: element.al.picUrl + '?param=80y80'
         }
         res.songs[index].index = index
-        audio.url = res1.data.find(element1 => {
+        audio.url = req.data.find(element1 => {
           return element1.id === element.id
         }).url
         this.musicUrlList.push(audio)

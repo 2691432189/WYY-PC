@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import api from '../../../../common/api'
 export default {
   props: {
     info: {
@@ -141,18 +142,18 @@ export default {
     // 获取搜索音乐结果方法
     async  getSearchMusicResult (page) {
       page = page || 1
-      const { data: res } = await this.$http.get(`/cloudsearch?keywords= ${this.info}&type=1&limit=100&offset=${(page - 1) * 100}`)
+      const { data: res } = await api.getSearchMusicResult(this.info, page)
       this.musicList = res.result
     },
     // 获取搜索歌单结果方法
     async  getSearchmusicDetailsPageResult (page) {
       page = page || 1
-      const { data: res } = await this.$http.get(`/cloudsearch?keywords= ${this.info}&type=1000&limit=100&offset=${(page - 1) * 100}`)
+      const { data: res } = await api.getSearchmusicDetailsPageResult(this.info, page)
       this.musicDetailsPageList = res.result
     },
     // 获取喜欢音乐列表方法
     async  getLikeMusicList () {
-      const { data: res } = await this.$http.get('/likelist?uid=' + window.localStorage.getItem('uid'))
+      const { data: res } = await api.getLikeMusicList(window.localStorage.getItem('uid'))
       if (res.code !== 200) return this.$message.error('获取喜欢的音乐列表失败')
       this.LikeMusicList = res.ids
     },
@@ -169,7 +170,7 @@ export default {
       } else {
         whether = true
       }
-      const { data: res } = await this.$http.get(`/like?id=${id}&like=${whether}`)
+      const { data: res } = await api.collectMusic(id, whether)
       if (res.code !== 200) return this.$message.error('操作失败')
       if (!whether) {
         event.path[1].className = ''

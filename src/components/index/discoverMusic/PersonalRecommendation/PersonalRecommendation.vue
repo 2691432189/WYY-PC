@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import api from '../../../../../common/api'
 export default {
   data () {
     return {
@@ -96,13 +97,13 @@ export default {
   methods: {
     // 获取轮播图列表方法
     async getCarouselList () {
-      const { data: res } = await this.$http.get('/banner?type=0')
+      const { data: res } = await api.getCarouselList()
       if (res.code !== 200) return this.$message.error('获取banner图失败')
       this.carouselList = res.banners
     },
     // 获取推荐歌单列表方法
     async getReCommendedPlaylist () {
-      const { data: res } = await this.$http.get('/personalized?limit=16')
+      const { data: res } = await api.getReCommendedPlaylist()
       if (res.code !== 200) return this.$message.error('获取推荐歌单失败')
       this.ReCommendedPlaylist = res.result
     },
@@ -112,7 +113,7 @@ export default {
     },
     // 获取推荐新音乐列表方法
     async  getNewMusicList () {
-      const { data: res } = await this.$http.get('/personalized/newsong?limit=60')
+      const { data: res } = await api.getNewMusicList()
       if (res.code !== 200) return this.$message.error('获取推荐新音乐失败')
       this.NewMusicList = res.result
     },

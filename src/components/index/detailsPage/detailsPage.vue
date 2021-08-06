@@ -255,17 +255,22 @@
 </template>
 
 <script>
+import api from '../../../../common/api'
 export default {
   props: {
     id: {
       type: String, // 类型
-      default: null // 默认值
+      default: 'aaa' // 默认值
     }
   },
   data () {
     return {
       // 歌单信息页面信息
-      detailsPageInfo: {},
+      detailsPageInfo: {
+        creator: {
+          avatarUrl: 'placeholder'
+        }
+      },
       // 音乐列表
       musicList: [],
       // 音乐链接列表
@@ -290,7 +295,7 @@ export default {
   methods: {
     // 获取歌单详细信息方法
     async getDetailsPage () {
-      const { data: res } = await this.$http.get('/playlist/detail?id=' + this.id)
+      const { data: res } = await api.getDetailsPage(this.id)
       if (res.code !== 200) return this.$message.error('获取歌单列表失败')
       this.detailsPageInfo = res.playlist
       this.trackIds = res.playlist.trackIds
@@ -299,8 +304,8 @@ export default {
     },
     // 收藏或取消收藏方法
     favoriteOrUnfavorite (id) {
-      this.$http.get(`/playlist/subscribe?t=${id}&id=${this.id}`)
-        .then((res) => {
+      api.favoriteOrUnfavorite(id, this.id)
+        .then(() => {
           this.detailsPageInfo.subscribed = !this.detailsPageInfo.subscribed
         })
         .catch((error) => {
@@ -324,10 +329,12 @@ export default {
           url = url + element.id + ','
         }
       })
-      const { data: res } = await this.$http.get('/song/detail?ids=' + url)
+      // 获取音乐列表
+      const { data: res } = await api.getMusicList(url)
       if (res.code !== 200) return this.$message.error('获取音乐列表失败')
-      const { data: res1 } = await this.$http.get('/song/url?id=' + url)
-      if (res1.code !== 200) return this.$message.error('获取音乐URL失败')
+      //  获取音乐url
+      const { data: req } = await api.getSongUrl(url)
+      if (req.code !== 200) return this.$message.error('获取音乐URL失败')
       // 处理播放列表，整合url
       this.musicUrlList = []
       res.songs.forEach((element, index) => {
@@ -338,7 +345,7 @@ export default {
           cover: element.al.picUrl + '?param=80y80'
         }
         res.songs[index].index = index
-        audio.url = res1.data.find(element1 => {
+        audio.url = req.data.find(element1 => {
           return element1.id === element.id
         }).url
         this.musicUrlList.push(audio)
@@ -347,7 +354,7 @@ export default {
     },
     // 获取喜欢音乐列表方法
     async  getLikeMusicList () {
-      const { data: res } = await this.$http.get('/likelist?uid=' + window.localStorage.getItem('uid'))
+      const { data: res } = await api.getLikeMusicList(window.localStorage.getItem('uid'))
       if (res.code !== 200) return this.$message.error('获取喜欢的音乐列表失败')
       this.LikeMusicList = res.ids
     },
@@ -375,7 +382,7 @@ export default {
       } else {
         whether = true
       }
-      const { data: res } = await this.$http.get(`/like?id=${id}&like=${whether}`)
+      const { data: res } = await api.collectMusic(id, whether)
       if (res.code !== 200) return this.$message.error('操作失败')
       if (!whether) {
         event.path[1].className = ''
@@ -387,7 +394,7 @@ export default {
     },
     // 获取评论列表
     async  getCommentList (page) {
-      const { data: res } = await this.$http.get(`/comment/playlist?id=${this.id}&limit=50&offset=${(page - 1) * 50 || 0}`)
+      const { data: res } = await api.getCommentList(this.id, page)
       if (res.code !== 200) return this.$message.error('获取歌单评论列表失败')
       // 反转评论列表数组
       res.comments.reverse()
@@ -396,7 +403,7 @@ export default {
     },
     // 获取歌单收藏列表
     async  getCollectorList (page) {
-      const { data: res } = await this.$http.get(`/playlist/subscribers?id=${this.id}&limit=51&offset=${(page - 1) * 51 || 0}`)
+      const { data: res } = await api.getCollectorList(this.id, page)
       if (res.code !== 200) return this.$message.error('获取歌单列表失败')
       this.collectorList = res
       this.collectorPage = page
@@ -415,7 +422,7 @@ export default {
     }
   },
   watch: {
-    id: function name (params) {
+    id: function name () {
       // 调用获取歌单详细信息方法
       this.getDetailsPage()
       // 调用获取评论列表
@@ -425,7 +432,9 @@ export default {
       // 调用获取歌单收藏列表
       this.getCollectorList()
       // 切换歌单后自动回到顶部
-      window.document.querySelector('.backtop').click()
+      if (window.document.querySelector('.backtop')) {
+        window.document.querySelector('.backtop').click()
+      }
     }
   },
   computed: {
@@ -435,7 +444,7 @@ export default {
       return true
     }
   },
-  created () {
+  mounted () {
     // 调用获取歌单详细信息方法
     this.getDetailsPage()
     // 调用获取评论列表

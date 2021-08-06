@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import api from '../../../../../common/api'
 export default {
   data () {
     return {
@@ -44,7 +45,7 @@ export default {
   methods: {
     // 获取排行榜列表方法
     async getLeaderboardList () {
-      const { data: res } = await this.$http.get('/toplist')
+      const { data: res } = api.getLeaderboardList()
       if (res.code !== 200) return this.$message.error('获取排行榜失败')
       this.leaderboardList = res.list
     },
