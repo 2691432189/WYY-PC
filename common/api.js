@@ -267,5 +267,32 @@ export default {
         axios.get(`/video/url?id=${id}`)
       )
     })
+  },
+
+  // 获取歌词
+  getLyrics: (id) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/lyric?id=${id}`)
+      )
+    })
+  },
+
+  // 检查音乐是否可用
+  checkMusic: (id) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/check/music?id=${id}`)
+      )
+    })
+  },
+
+  // 获取音乐评论
+  getMusicComment: (id, page) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/comment/music?id=${id}&limit=20&offset=${page * 20}`)
+      )
+    })
   }
 }

@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import api from '../../../../common/api'
 export default {
   data () {
     return {
@@ -124,19 +123,19 @@ export default {
   methods: {
     // 获取热门视频分类方法
     async  getHotVideoSort () {
-      const { data: res } = await api.getHotVideoSort()
+      const { data: res } = await this.$http.getHotVideoSort()
       if (res.code !== 200) return this.$message.error('获取热门歌单分类失败')
       this.hotVideoSortList = res.data
     },
     // 获取视频列表方法
     async  getVideoList (id, cat, page) {
       if (id === null) {
-        const { data: res } = await api.getVideoList(page)
+        const { data: res } = await this.$http.getVideoList(page)
         if (res.code !== 200) return this.$message.error('获取视频列表失败')
         this.videoList = res.datas
         this.cideoSortId = null
       } else {
-        const { data: res } = await api.getVideoGroupList(id, page)
+        const { data: res } = await this.$http.getVideoGroupList(id, page)
         if (res.code !== 200) return this.$message.error('获取视频列表失败')
         this.videoList = res.datas
         this.cideoSortId = id
@@ -149,7 +148,7 @@ export default {
     },
     // 播放视频方法
     async  playVideo (id, title) {
-      const { data: res } = await api.playVideo(id)
+      const { data: res } = await this.$http.playVideo(id)
       if (res.code !== 200) return this.$message.error('获取视频播放地址失败')
       this.dialogTableVisible = true
       this.videoTitle = title

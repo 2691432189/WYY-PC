@@ -12,6 +12,10 @@ a {
   color:#333;
 }
 
+li{ 
+  list-style: none;
+}
+
 /* 侧边栏每一个item高度 */
 .el-aside .el-menu-item {
   height: 43px;
@@ -35,40 +39,6 @@ a {
   height: 0;
 }
 
-/* 播放控件 */
-/* .aplayer{
-  margin-top: 6px !important;
-} */
-
-/* 曲名歌手样式 */
-/* .el-footer .aplayer .aplayer-info .aplayer-music {
-  width: 25%;
-} */
-
-/* 音乐图片 */
-/* .el-footer .aplayer.aplayer-withlrc .aplayer-pic {
-  height: 60px;
-  width: 60px;
-} */
-
-/* 歌词高度 */
-/* .el-footer .aplayer .aplayer-lrc {
-  height: 20px;
-  margin: -33px 0 7px;
-} */
-
-/* 歌词 */
-/* .el-footer .aplayer .aplayer-lrc .aplayer-lrc-contents {
-  width: 87%;
-  width: 75%;
-  margin-left: 25%;
-} */
-
-/* .el-footer .aplayer.aplayer-withlrc .aplayer-info {
-  margin-left: 60px;
-  height: 60px;
-} */
-
 /* 歌单页切换栏样式 */
 .detailsPageTabs .el-tabs__nav-wrap::after {
   height: 0px;
@@ -91,10 +61,40 @@ a {
 
 /* 去除底部盒子边框线 */
 .el-footer {
-  border-top: 0px !important;
+  height: 75px!important;
 }
 
+/* 登录注册对话框 */
 .el-dialog {
   min-width: 460px !important;
 }
 
+/* 进度条/音量条颜色 */
+.el-slider__bar {
+  height: 4px;
+  background-color: #ec4141;
+}
+.el-slider__button {
+  width: 8px;
+  height: 8px;
+  border: 0px solid #ec4141;
+  background-color: #ec4141;
+}
+.el-slider__runway {
+  height: 4px;
+}
+#schedule .el-slider__button-wrapper {
+  top: -16px;
+}
+#volumeBar .el-slider__button-wrapper {
+  top: -18px;
+}
+
+/* 音乐播放页 */
+.el-drawer__wrapper {
+  position: fixed !important;
+  bottom: 76px;
+  width: 1536px;
+  margin: 0 auto;
+  box-shadow: none;
+}

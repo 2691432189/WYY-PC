@@ -15,7 +15,7 @@
         排行榜
       </el-menu-item>
     </el-menu>
-    <router-view />
+    <router-view id="qqq" />
   </div>
 </template>
 
@@ -31,5 +31,8 @@ export default {
 <style lang="less" scoped>
 .el-menu{
   border-bottom: 0px !important;
+}
+#qqq {
+  transform: translateX(-25px);
 }
 </style>

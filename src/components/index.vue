@@ -14,14 +14,12 @@
             <!-- 前后退 -->
             <el-button
               size="mini"
-              type="danger"
               class="el-icon-arrow-left btn-go"
               circle
               @click="btnGo('go')"
             />
             <el-button
               size="mini"
-              type="danger"
               class="el-icon-arrow-right btn-go"
               circle
               @click="btnGo('down')"
@@ -104,7 +102,7 @@
           >
             <a
               href="javascript:;"
-              @click="whetherShowLoginDialogBox = true"
+              @click=" clickWhetherShowLoginDialogBox() "
             >
               {{ userInfo.name ? userInfo.name : "未登录" }}</a>
           </el-col>
@@ -126,9 +124,12 @@
         </el-row>
       </el-header>
       <!-- 头部 -->
-      <el-container :class="{ bodyHeight: onListShowHide }">
+      <el-container>
         <!-- 侧边栏 -->
-        <el-aside width="200px">
+        <el-aside
+          width="200px"
+          id="mainBody"
+        >
           <el-menu
             :default-active="sidebarIndex"
             class="el-menu-vertical-demo"
@@ -160,23 +161,18 @@
         </el-aside>
         <!-- 侧边栏 -->
         <!-- 主体 -->
-        <el-main>
+        <el-main id="mainBody">
           <router-view />
         </el-main>
         <!-- 主体 -->
       </el-container>
       <!-- 下播放栏 -->
-      <el-footer>
-        <aplayer
-          :audio="audio"
-          :lrc-type="0"
-          ref="aplayer"
-          :list-max-height="150"
-          @listShow="handleEvent"
-          @listHide="handleEvent"
-          :list-folded="true"
-        />
-      </el-footer>
+      <aplayer
+        id="aplayer"
+        :data="audio"
+        :index="audioIndex"
+        ref="aplayer"
+      />
       <!-- 下播放栏 -->
     </el-container>
     <!-- 登录对话框 -->
@@ -303,7 +299,7 @@
 </template>
 
 <script>
-import api from '../../common/api.js'
+import aplayer from './index/aplayer/aplayer'
 export default {
   data () {
     // 手机号自定义验证
@@ -369,9 +365,8 @@ export default {
       whetherToDisableRegistrationBtn: true,
       // 是否禁用发送验证码按钮
       whetherToDisableSendTheVerificationCodeBtn: true,
-      // 音乐播放控件
       audio: [],
-      onListShowHide: false
+      audioIndex: 0
     }
   },
   methods: {
@@ -385,14 +380,14 @@ export default {
     },
     // 获取热门搜索方法
     async getHotMusic () {
-      const { data: res } = await api.getHotMusic()
+      const { data: res } = await this.$http.getHotMusic()
       if (res.code !== 200) return this.$message.error('获取热搜失败')
       this.hotMusicList = res.data
     },
     // 获取搜索建议
     async getDefault () {
       this.ifShow = false
-      const { data: res } = await api.getDefault(this.searchinfo)
+      const { data: res } = await this.$http.getDefault(this.searchinfo)
       if (res.code !== 200) return this.$message.error('获取搜索建议失败')
       this.lefaultList = res.result.songs
     },
@@ -417,12 +412,20 @@ export default {
     getSidebarIndex () {
       this.sidebarIndex = localStorage.getItem('index')
     },
+    // 是否显示登录对话框
+    clickWhetherShowLoginDialogBox () {
+      if (!window.localStorage.getItem('login')) {
+        this.whetherShowLoginDialogBox = true
+      } else {
+        this.$message.error('您已登录')
+      }
+    },
     // 登录方法
     login () {
       this.$refs.loginFormRef.validate(async valid => {
         if (valid) {
           // 请求登录
-          const { data: res } = await api.login(this.loginInfo)
+          const { data: res } = await this.$http.login(this.loginInfo)
           if (res.code !== 200) return this.$message.error('登录失败')
           this.loginInfo.phone = ''
           this.loginInfo.password = ''
@@ -438,7 +441,7 @@ export default {
     },
     // 获取登录用户信息
     async getLoginUserInfo () {
-      const { data: res } = await api.getLoginUserInfo(this.loginInfo)
+      const { data: res } = await this.$http.getLoginUserInfo(this.loginInfo)
       if (res.profile) {
         window.localStorage.setItem('uid', res.profile.userId)
         window.localStorage.setItem('img', res.profile.avatarUrl)
@@ -452,12 +455,12 @@ export default {
     },
     // 获取用户歌单方法
     async getUserSongList () {
-      const { data: res } = await api.getUserSongList(window.localStorage.getItem('uid'))
+      const { data: res } = await this.$http.getUserSongList(window.localStorage.getItem('uid'))
       this.UserSongList = res.playlist
     },
     // 退出登录方法
     async signOut () {
-      const { data: res } = await api.getUserSongList(window.localStorage.getItem('uid'))
+      const { data: res } = await this.$http.getUserSongList(window.localStorage.getItem('uid'))
       if (res.code !== 200) return this.$message.error('退出失败')
       this.UserSongList = []
       this.userInfo.img = ''
@@ -470,7 +473,7 @@ export default {
     },
     // 发送验证码
     async sendTheVerificationCode () {
-      const { data: res } = await api.sendTheVerificationCode(this.registeredInfo.phone)
+      const { data: res } = await this.$http.sendTheVerificationCode(this.registeredInfo.phone)
       if (res.code !== 200) return this.$message.error('发送验证码失败')
       this.$message({
         message: '发送验证码成功',
@@ -481,7 +484,7 @@ export default {
     registered () {
       this.$refs.registeredFormRef.validate(async valid => {
         if (valid) {
-          api.registered(this.registeredInfo)
+          this.$http.registered(this.registeredInfo)
             .then(() => {
               this.$message({
                 message: '注册成功',
@@ -496,11 +499,10 @@ export default {
             })
         }
       })
-    },
-    // 控制播放栏展开/关闭
-    handleEvent () {
-      this.onListShowHide = !this.onListShowHide
     }
+  },
+  components: {
+    aplayer
   },
   watch: {
     // 监听搜索框，判断显示推荐或者关键词
@@ -530,6 +532,15 @@ export default {
           this.whetherToDisableSendTheVerificationCodeBtn = true
         }
       }
+    },
+    // 监听音乐数据的变化
+    '$store.state.audioList' (data) {
+      this.audio = data
+      this.audioIndex = 0
+    },
+    // 监听音乐索引的变化
+    '$store.state.songIndex' (data) {
+      this.audioIndex = data.index
     }
   },
   updated () {
@@ -541,27 +552,6 @@ export default {
   created () {
     // 调用获取用户歌单
     this.getUserSongList()
-  },
-  mounted () {
-    this.$refs.aplayer.hideList()
-    // 监听本地储存的值变化
-    // 注:主要用于收藏/取消歌单后重新获取歌单列表，但因为某种原因重新获取的歌单没有变化,应该是
-    // 服务器延迟的原因，暂时并没有什么好的解决方法
-    window.addEventListener('setItem', e => {
-      if (e.key === 'butCountNum') {
-        var music = window.localStorage.getItem('currentlyPlayingMusic')
-        this.audio = this.$store.state.audioList
-        window.setTimeout(() => {
-          if (music) {
-            this.$refs.aplayer.switch(music * 1)
-            window.localStorage.removeItem('currentlyPlayingMusic')
-          } else {
-            this.$refs.aplayer.switch(0)
-          }
-        }, 200)
-      }
-      this.$refs.aplayer.play()
-    })
   }
 }
 </script>
@@ -576,8 +566,8 @@ export default {
 }
 // 头部
 .el-header {
-  background-color: #ec4141;
-  color: #fff;
+  background-color: #f5f5f5;
+  color: rgb(0, 0, 0);
   font-size: 20px;
   // 前进后退和搜索
   .el-col {
@@ -588,8 +578,8 @@ export default {
       vertical-align: -3px;
     }
     .btn-go {
-      color: #ff9898;
-      background-color: #e63f3f;
+      color: #b3b3b3;
+      background-color: #ebebeb;
     }
     .el-input {
       margin-left: 20px;
@@ -612,7 +602,7 @@ export default {
     font-size: 14px;
     a {
       text-decoration: none;
-      color: #fff;
+      color: rgb(46, 46, 46);
     }
   }
   // 退出登录按钮
@@ -622,7 +612,6 @@ export default {
 }
 // 侧边栏
 .el-aside {
-  height: 82vh;
   border-right: solid 1px #e6e6e6;
   .el-menu {
     overflow: hidden;
@@ -642,16 +631,6 @@ export default {
   }
 }
 
-// 播放栏控件
-.el-footer {
-  box-sizing: border-box;
-  border-top: 1px solid #ccc;
-  .aplayer {
-    margin: 5px 0;
-    width: 100%;
-    z-index: 999;
-  }
-}
 // 登录注册按钮
 .loginBtn {
   margin-left: 82%;
@@ -660,9 +639,16 @@ export default {
 .el-main {
   padding: 0px 20px 0px;
   overflow: auto;
-  height: 82vh;
 }
-.bodyHeight {
-  height: 62vh !important;
+//  控住主体的高度
+#mainBody {
+  height: 92vh;
+}
+
+#aplayer {
+  position: fixed ;
+  bottom: 0px;
+  width: 1536px;
+  border-top: 1px solid #ccc;
 }
 </style>

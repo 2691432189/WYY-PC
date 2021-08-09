@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import api from '../../../../../common/api'
 export default {
   data () {
     return {
@@ -78,13 +77,13 @@ export default {
   methods: {
     // 获取热门歌单分类方法
     async  getHotMusicSort () {
-      const { data: res } = await api.getHotMusicSort()
+      const { data: res } = await this.$http.getHotMusicSort()
       if (res.code !== 200) return this.$message.error('获取热门歌单分类失败')
       this.hotMusicSortList = res.tags
     },
     // 获取歌单方法
     async  getSongList (cat, page) {
-      const { data: res } = await api.getSongList(cat, page)
+      const { data: res } = await this.$http.getSongList(cat, page)
       if (res.code !== 200) return this.$message.error('获取歌单失败')
       this.musicList = res
     },
