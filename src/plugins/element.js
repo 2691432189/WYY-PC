@@ -1,7 +1,9 @@
 import Vue from 'vue'
-import { Button, Icon, Loading, Header, Container, Aside, Main, Footer, Menu, Submenu, MenuItemGroup, Avatar, Row, Col, Input, Popover, MenuItem, Message, Link, Dialog, Card, Form, FormItem, Carousel, CarouselItem, Image, Tabs, TabPane, Table, TableColumn, Backtop, Pagination, Progress, Upload } from 'element-ui'
+import { Button, Drawer, Icon, Slider, Loading, Header, Container, Aside, Main, Footer, Menu, Submenu, MenuItemGroup, Avatar, Row, Col, Input, Popover, MenuItem, Message, Link, Dialog, Card, Form, FormItem, Carousel, CarouselItem, Image, Tabs, TabPane, Table, TableColumn, Backtop, Pagination, Progress, Upload } from 'element-ui'
 
 Vue.use(Button)
+Vue.use(Drawer)
+Vue.use(Slider)
 Vue.use(Loading)
 Vue.use(Upload)
 Vue.use(Progress)

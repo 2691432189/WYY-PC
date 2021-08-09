@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    audioList: []
+    audioList: [],
+    songIndex: {}
   },
   mutations: {
     addmusic (state, data) {
@@ -13,6 +14,9 @@ export default new Vuex.Store({
     },
     pushMusic (state, data) {
       state.audioList.unshift(data)
+    },
+    changeSongIndex (state, data) {
+      state.songIndex = data
     }
   },
   getters: {

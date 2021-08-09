@@ -112,7 +112,6 @@
 </template>
 
 <script>
-import api from '../../../../common/api'
 export default {
   data () {
     return {
@@ -131,7 +130,7 @@ export default {
   methods: {
     // 获取云盘数据方法
     async getMyMusicCloudDisk (page) {
-      const { data: res } = await api.getMyMusicCloudDisk(page)
+      const { data: res } = await this.$http.getMyMusicCloudDisk(page)
       if (res.code !== 200) return this.$message.error('获取音乐列表失败')
       res.data.forEach((element, index) => {
         element.index = index
@@ -171,14 +170,16 @@ export default {
     },
     // 双击播放
     doubleClickToPlay (row) {
-      window.localStorage.setItem('currentlyPlayingMusic', row.index)
       this.$store.commit('addmusic', this.musicUrlList)
-      this.$addStorageEvent(1, 'butCountNum', true)
+      this.$store.commit('changeSongIndex', {
+        index: row.index,
+        random: Math.random()
+      })
     },
     // 播放全部方法
     toPlayAll () {
       this.$store.commit('addmusic', this.musicUrlList)
-      this.$addStorageEvent(1, 'butCountNum', true)
+      this.$store.commit('changeSongIndex', 0)
     },
     // 翻页方法
     myMusicCloudDiskCurrentChange (page) {
@@ -186,37 +187,10 @@ export default {
     },
     // 获取音乐详细信息方法
     async getMusicUrl () {
-      var url = ''
-      this.myMusicCloudDiskInfo.data.forEach((element, index) => {
-        // 限制请求音乐的条数，将每个歌单最大数量限制到150条
-        if (index === this.myMusicCloudDiskInfo.data.length - 1) {
-          url = url + element.songId
-        } else {
-          url = url + element.songId + ','
-        }
-      })
-      // 获取音乐列表
-      const { data: res } = await api.getMusicList(url)
-      if (res.code !== 200) return this.$message.error('获取音乐列表失败')
-      //  获取音乐url
-      const { data: req } = await api.getSongUrl(url)
-      if (req.code !== 200) return this.$message.error('获取音乐URL失败')
-      // 处理播放列表，整合url
-      this.musicUrlList = []
-      res.songs.forEach((element, index) => {
-        var audio = {
-          name: element.name,
-          artist: element.pc.ar,
-          url: '',
-          cover: element.al.picUrl + '?param=80y80'
-        }
-        res.songs[index].index = index
-        audio.url = req.data.find(element1 => {
-          return element1.id === element.id
-        }).url
-        this.musicUrlList.push(audio)
-      })
-      this.musicList = res.songs
+      this.$play(this, this.myMusicCloudDiskInfo.data)
+        .then((res) => {
+          this.musicUrlList = res.musicUrlList
+        })
     }
   },
   computed: {

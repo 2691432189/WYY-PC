@@ -82,7 +82,6 @@
 </template>
 
 <script>
-import api from '../../../../../common/api'
 export default {
   data () {
     return {
@@ -97,13 +96,13 @@ export default {
   methods: {
     // 获取轮播图列表方法
     async getCarouselList () {
-      const { data: res } = await api.getCarouselList()
+      const { data: res } = await this.$http.getCarouselList()
       if (res.code !== 200) return this.$message.error('获取banner图失败')
       this.carouselList = res.banners
     },
     // 获取推荐歌单列表方法
     async getReCommendedPlaylist () {
-      const { data: res } = await api.getReCommendedPlaylist()
+      const { data: res } = await this.$http.getReCommendedPlaylist()
       if (res.code !== 200) return this.$message.error('获取推荐歌单失败')
       this.ReCommendedPlaylist = res.result
     },
@@ -113,23 +112,20 @@ export default {
     },
     // 获取推荐新音乐列表方法
     async  getNewMusicList () {
-      const { data: res } = await api.getNewMusicList()
+      const { data: res } = await this.$http.getNewMusicList()
       if (res.code !== 200) return this.$message.error('获取推荐新音乐失败')
       this.NewMusicList = res.result
     },
     // 双击播放音乐
     async dblclickPlayMusic (row) {
-      const { data: res } = await this.$http.get('/song/url?id=' + row.id)
-      if (res.code !== 200) return this.$message.error('获取音乐URL失败')
-      var audio = {
-        name: row.name,
-        artist: row.song.artists[0].name,
-        url: res.data[0].url,
-        cover: row.picUrl + '?param=80y80'
-      }
-      window.localStorage.setItem('currentlyPlayingMusic', 0)
-      this.$store.commit('pushMusic', audio)
-      this.$addStorageEvent(1, 'butCountNum', true)
+      this.$play(this, [{ id: row.id }])
+        .then((res) => {
+          this.$store.commit('pushMusic', res.musicUrlList[0])
+          this.$store.commit('changeSongIndex', {
+            index: 0,
+            random: Math.random()
+          })
+        })
     }
   },
   created () {

@@ -116,7 +116,6 @@
 </template>
 
 <script>
-import api from '../../../../common/api'
 export default {
   props: {
     info: {
@@ -142,18 +141,18 @@ export default {
     // 获取搜索音乐结果方法
     async  getSearchMusicResult (page) {
       page = page || 1
-      const { data: res } = await api.getSearchMusicResult(this.info, page)
+      const { data: res } = await this.$http.getSearchMusicResult(this.info, page)
       this.musicList = res.result
     },
     // 获取搜索歌单结果方法
     async  getSearchmusicDetailsPageResult (page) {
       page = page || 1
-      const { data: res } = await api.getSearchmusicDetailsPageResult(this.info, page)
+      const { data: res } = await this.$http.getSearchmusicDetailsPageResult(this.info, page)
       this.musicDetailsPageList = res.result
     },
     // 获取喜欢音乐列表方法
     async  getLikeMusicList () {
-      const { data: res } = await api.getLikeMusicList(window.localStorage.getItem('uid'))
+      const { data: res } = await this.$http.getLikeMusicList(window.localStorage.getItem('uid'))
       if (res.code !== 200) return this.$message.error('获取喜欢的音乐列表失败')
       this.LikeMusicList = res.ids
     },
@@ -170,7 +169,7 @@ export default {
       } else {
         whether = true
       }
-      const { data: res } = await api.collectMusic(id, whether)
+      const { data: res } = await this.$http.collectMusic(id, whether)
       if (res.code !== 200) return this.$message.error('操作失败')
       if (!whether) {
         event.path[1].className = ''
@@ -182,17 +181,14 @@ export default {
     },
     // 双击播放音乐
     async dblclickPlayMusic (row) {
-      const { data: res } = await this.$http.get('/song/url?id=' + row.id)
-      if (res.code !== 200) return this.$message.error('获取音乐URL失败')
-      var audio = {
-        name: row.name,
-        artist: row.ar[0].name,
-        url: res.data[0].url,
-        cover: row.al.picUrl + '?param=80y80'
-      }
-      window.localStorage.setItem('currentlyPlayingMusic', 0)
-      this.$store.commit('pushMusic', audio)
-      this.$addStorageEvent(1, 'butCountNum', true)
+      this.$play(this, [{ id: row.id }])
+        .then((res) => {
+          this.$store.commit('pushMusic', res.musicUrlList[0])
+          this.$store.commit('changeSongIndex', {
+            index: 0,
+            random: Math.random()
+          })
+        })
     },
     // 音乐翻页
     musicListCurrentChange (page) {
