@@ -232,7 +232,9 @@ export default {
     },
     // 更改播放时间
     changeCurrentTime () {
-      this.$refs.aplayer.currentTime = this.currentTime
+      if (this.controlPlayPause) {
+        this.$refs.aplayer.currentTime = this.currentTime
+      }
     },
     // 展开/关闭音乐播放器页面
     unfoldMusicPlayerPage () {
@@ -297,7 +299,7 @@ export default {
     index (index) {
       this.indexs = index
     },
-    changeData: function () {
+    changeData () {
       for (let i = 0; i < this.data.length; i++) {
         this.data[i].index = i
       }

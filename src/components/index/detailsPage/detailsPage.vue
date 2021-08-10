@@ -35,7 +35,7 @@
               fit="cover"
             />
             <span>{{ detailsPageInfo.creator.nickname }}</span>
-            <span>{{ this.$filter(detailsPageInfo.createTime) +'创建' }}</span>
+            <span>{{ this.$timeFilter(detailsPageInfo.createTime) +'创建' }}</span>
           </div>
           <!-- 用户名 -->
           <!-- 播放全部/收藏按钮 -->
@@ -187,7 +187,7 @@
               </div>
               <!-- 回复 -->
               <!-- 时间 -->
-              <div class="time">{{ $filter(item.time) }}</div>
+              <div class="time">{{ $timeFilter(item.time) }}</div>
             <!-- 时间 -->
             </span>
           </div>
@@ -261,7 +261,7 @@ export default {
   props: {
     id: {
       type: String, // 类型
-      default: 'aaa' // 默认值
+      default: '' // 默认值
     }
   },
   data () {
@@ -398,7 +398,7 @@ export default {
     }
   },
   watch: {
-    id: function name () {
+    id: function () {
       // 调用获取歌单详细信息方法
       this.getDetailsPage()
       // 调用获取评论列表

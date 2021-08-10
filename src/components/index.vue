@@ -373,9 +373,9 @@ export default {
     // 页面前进后退方法
     btnGo (info) {
       if (info === 'go') {
-        this.$router.go(1)
-      } else {
         this.$router.go(-1)
+      } else {
+        this.$router.go(1)
       }
     },
     // 获取热门搜索方法

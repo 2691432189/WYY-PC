@@ -79,7 +79,7 @@
                     </div>
                     <!-- 评论 -->
                     <!-- 时间 -->
-                    <div class="time">{{ $filter(item.time) }}</div>
+                    <div class="time">{{ $timeFilter(item.time) }}</div>
                   <!-- 时间 -->
                   </span>
                 </div>
@@ -262,7 +262,7 @@ export default {
         transition: all 1s;
       }
       #lyrics-item {
-        padding: 22px 0;
+        padding: 22px 40px;
         text-align: center;
         font-size: 16px;
         color: #5e5e5e;
@@ -278,6 +278,7 @@ export default {
       flex: 4;
       display: flex;
       flex-direction: column;
+      transform: translateX(90px);
       #commentNav {
         flex: 5;
         font-size: 18px;
@@ -290,7 +291,7 @@ export default {
         }
         // 评论列表
         .commentList{
-          // border-bottom: 1px #ccc solid;
+          width: 300px;
           padding: 20px 0;
           position: relative;
           // 评论者头像
@@ -299,7 +300,7 @@ export default {
             top: 20px;
           }
           >span{
-            width: 70%;
+            width: 78%;
             display: inline-block;
             padding-left: 55px;
             // 评论

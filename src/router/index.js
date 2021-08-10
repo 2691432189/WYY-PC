@@ -9,6 +9,7 @@ import SongList from '../components/index/discoverMusic/songList/songList.vue' /
 import Leaderboard from '../components/index/discoverMusic/Leaderboard/Leaderboard.vue'// 排行榜
 import Search from '../components/index/search/search.vue' // 搜索页
 import CloudDisk from '../components/index/cloudDisk/cloudDisk.vue' // 音乐云盘
+import VideoPlayerPage from '../components/index/videoPlayerPage/videoPlayerPage.vue' // 视频播放页
 Vue.use(VueRouter)
 
 const routes = [
@@ -30,6 +31,8 @@ const routes = [
       },
       // 视频
       { path: '/Video', component: Video },
+      // 视频播放页
+      { path: '/VideoPlayerPage/:videoId', component: VideoPlayerPage, props: true },
       // 歌单详情页
       { path: '/DetailsPage*/:id', component: DetailsPage, props: true },
       // 搜索页

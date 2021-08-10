@@ -4,24 +4,14 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
-import APlayer from '@moefe/vue-aplayer'
 import api from '../common/api'
 import { play } from '../common/play'
-
-// 导入视频组件
-import VueVideoPlayer from 'vue-video-player'
-import 'video.js/dist/video-js.css'
-
-Vue.use(APlayer, {
-  defaultCover: 'https://github.com/u3u.png',
-  productionTip: true
-})
 
 Vue.prototype.$http = api
 Vue.prototype.$play = play
 
 // 时间格式处理
-Vue.prototype.$filter = timestamp => {
+Vue.prototype.$timeFilter = timestamp => {
   function format (number) {
     return number.toString().padStart(2, '0')
   }
@@ -87,12 +77,6 @@ Vue.prototype.$times = number => {
   return minute + ':' + second
 }
 // import 'vue-video-player/src/custom-theme.css'
-
-// 全局挂载视频组件
-Vue.use(VueVideoPlayer /* {
-  options: global default options,
-  events: global videojs events
-} */)
 
 new Vue({
   router,

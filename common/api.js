@@ -246,7 +246,7 @@ export default {
   getVideoList: (page) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get(`/video/timeline/all?offset=${(page - 1) * 40 || 0}`)
+        axios.get(`/video/timeline/all?offset=${page * 8}`)
       )
     })
   },
@@ -255,7 +255,7 @@ export default {
   getVideoGroupList: (id, page) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get(`/video/group?id=${id}&offset=${(page - 1) * 40 || 0}`)
+        axios.get(`/video/group?id=${id}&offset=${page * 8}`)
       )
     })
   },
@@ -292,6 +292,42 @@ export default {
     return new Promise((resolve) => {
       resolve(
         axios.get(`/comment/music?id=${id}&limit=20&offset=${page * 20}`)
+      )
+    })
+  },
+
+  // 获取视频详细信息
+  getVideoDetails: (id) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/video/detail?id=' + id)
+      )
+    })
+  },
+
+  // 获取视频Url
+  getVideoUrl: (id) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/video/url?id=' + id)
+      )
+    })
+  },
+
+  // 获取视频评论
+  getVideoComment: (id) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/comment/video?id=' + id)
+      )
+    })
+  },
+
+  // 获取视频评论
+  getRelatedVideo: (id) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/related/allvideo?id=' + id)
       )
     })
   }

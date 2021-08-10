@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBody">
+  <div>
     <!-- 歌单 -->
     <el-row
       :gutter="80"
@@ -60,10 +60,12 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 // 歌单
 .reCommendedPlay {
   flex-wrap: wrap;
+  width: 100% ;
+  margin: 0 auto !important;
   // 歌单名
   .el-col{
     margin-top: 30px;

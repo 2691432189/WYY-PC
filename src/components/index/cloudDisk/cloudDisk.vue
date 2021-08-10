@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBody">
+  <div id="cloudDisk">
     <h3 class="myMusicCloudDisk">
       我的音乐云盘
     </h3>
@@ -95,7 +95,7 @@
         width="100"
       >
         <template slot-scope="scope">
-          {{ $filter(scope.row.addTime) }}
+          {{ $timeFilter(scope.row.addTime) }}
         </template>
       </el-table-column>
     </el-table>
@@ -230,6 +230,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+#cloudDisk {
+  overflow: auto;
+  min-height: 610px;
+  height: 88%;
+  padding: 0 80px;
+}
 .myMusicCloudDisk {
   margin: 30px 0 0 0;
 }

@@ -108,7 +108,7 @@
           :current-page="musicDetailsPage"
           @current-change="musicDetailsCurrentChange"
         />
-      <!-- 分页 -->
+        <!-- 分页 -->
       </el-tab-pane>
       <!-- 歌单列表 -->
     </el-tabs>

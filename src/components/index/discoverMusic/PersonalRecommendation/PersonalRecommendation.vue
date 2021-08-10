@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mainBody">
+    <div>
       <!-- 轮播图 -->
       <el-carousel
         :interval="5000"
@@ -14,6 +14,7 @@
           <el-image
             style="width: 100%; height: 100% ; border-radius: 15px"
             :src="item.imageUrl"
+            @click="playMusic(item.targetId)"
           />
         </el-carousel-item>
       </el-carousel>
@@ -60,16 +61,16 @@
           :span="7"
           v-for="(item, index) in NewMusicList"
           :key="index"
-          @dblclick="dblclickPlayMusic(item)"
+          @dblclick="playMusic(item.id)"
         >
           <el-image
             style="width: 60px; border-radius: 10px"
             :src="item.picUrl+'?param=80y80'"
-            @dblclick="dblclickPlayMusic(item)"
+            @dblclick="playMusic(item.id)"
           />
           <div
             class="newMusicUserInFo"
-            @dblclick="dblclickPlayMusic(item)"
+            @dblclick="playMusic(item.id)"
           >
             <div>{{ item.name }}</div>
             <div>{{ item.song.artists[0].name }}</div>
@@ -116,10 +117,14 @@ export default {
       if (res.code !== 200) return this.$message.error('获取推荐新音乐失败')
       this.NewMusicList = res.result
     },
-    // 双击播放音乐
-    async dblclickPlayMusic (row) {
-      this.$play(this, [{ id: row.id }])
+    // 播放音乐
+    async playMusic (id) {
+      // 判断id是否合法
+      if (id === 0) return this.$message.error('当前暂无音乐哦~')
+      this.$play(this, [{ id }])
         .then((res) => {
+          // 判断响应数据是否合法
+          if (res.musicUrlList.length === 0) return this.$message.error('当前暂无音乐哦~')
           this.$store.commit('pushMusic', res.musicUrlList[0])
           this.$store.commit('changeSongIndex', {
             index: 0,

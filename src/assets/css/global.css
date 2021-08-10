@@ -22,13 +22,6 @@ li{
   line-height: 43px;
 }
 
-/* 主体内容区 */
-.mainBody {
-  overflow: auto;
-  height: 100%;
-  padding: 0 80px;
-}
-
 /* 隐藏滑动条 */
 ::-webkit-scrollbar {
   width: 0 !important;
@@ -83,8 +76,13 @@ li{
 .el-slider__runway {
   height: 4px;
 }
+.el-slider__button-wrapper {
+  width: 8px;
+  height: 8px;
+}
+
 #schedule .el-slider__button-wrapper {
-  top: -16px;
+  top: -8px;
 }
 #volumeBar .el-slider__button-wrapper {
   top: -18px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBody">
+  <div class="songList">
     <!-- 热门分类 -->
     <div class="hotMusicSortNav">
       <div>
@@ -70,8 +70,9 @@ export default {
       hotMusicSortList: [],
       // 热门音乐排行榜
       musicList: {},
-      // 评论列表当前页
-      musicListage: 1
+      // 歌单列表当前页
+      musicListage: 1,
+      cat: ''
     }
   },
   methods: {
@@ -83,6 +84,10 @@ export default {
     },
     // 获取歌单方法
     async  getSongList (cat, page) {
+      if (this.cat !== cat) {
+        this.musicListage = 1
+        this.cat = cat
+      }
       const { data: res } = await this.$http.getSongList(cat, page)
       if (res.code !== 200) return this.$message.error('获取歌单失败')
       this.musicList = res
@@ -107,12 +112,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// 分类样式
+  // 分类样式
   .hotMusicSortNav {
-    margin-bottom: 60px;
-    margin-top: 30px;
+    height: 30px;
+    padding-top: 30px;
+    position: relative;
     >:nth-child(1) {
-      float: left;
+      position: absolute;
+      left: 0px;
       padding: 7px 15px;
       border: 1px #eaeaea solid;
       font-size: 14px;
@@ -124,7 +131,8 @@ export default {
       }
     }
     >:nth-child(2) {
-      float: right;
+      position: absolute;
+      right: 0px;
       a {
         margin: 0 5px;
         font-size: 12px;
@@ -135,49 +143,49 @@ export default {
       }
     }
   }
-// 歌单
-.reCommendedPlay {
-  flex-wrap: wrap;
-  // 歌单名
-  .el-col{
-    margin-top: 30px;
-    .reCommendedPlayName {
-      margin-bottom: 20px;
-      font-size: 13px;
-      // 鼠标变小手
-      cursor:pointer;
-      // 多行溢出隐藏
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-    div:nth-child(1) {
-      // 鼠标变小手
-      cursor:pointer;
-      position: relative;
-      // 图片遮罩层
-      i {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 98%;
-        border-radius: 8px;
-        background-color: rgba(#000, .3);
-        z-index: 10;
-        text-align: center;
-        line-height: 220px;
-        color: rgb(230, 230, 230);
-        font-size: 50px;
-        opacity: 0;
-        transition: all .5s;
+  // 歌单
+  .reCommendedPlay {
+    flex-wrap: wrap;
+    // 歌单名
+    .el-col{
+      margin-top: 30px;
+      .reCommendedPlayName {
+        margin-bottom: 20px;
+        font-size: 13px;
+        // 鼠标变小手
+        cursor:pointer;
+        // 多行溢出隐藏
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
-      &:hover i {
-        opacity: 1;
+      div:nth-child(1) {
+        // 鼠标变小手
+        cursor:pointer;
+        position: relative;
+        // 图片遮罩层
+        i {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 98%;
+          border-radius: 8px;
+          background-color: rgba(#000, .3);
+          z-index: 10;
+          text-align: center;
+          line-height: 220px;
+          color: rgb(230, 230, 230);
+          font-size: 50px;
+          opacity: 0;
+          transition: all .5s;
+        }
+        &:hover i {
+          opacity: 1;
+        }
       }
     }
   }
-}
 </style>
