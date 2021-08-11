@@ -2,6 +2,8 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://localhost:3000'
+// http://localhost:3000
+// http://42.193.111.124:8889
 axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
 
 export default {
