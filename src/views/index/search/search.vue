@@ -78,7 +78,7 @@
           class="reCommendedPlay"
         >
           <el-col
-            :span="6"
+            :span="4"
             v-for="item in musicDetailsPageList.playlists"
             :key="item.id"
           >
@@ -87,6 +87,13 @@
                 style="width: 100%; height: 80%; border-radius: 10px"
                 :src="item.coverImgUrl+'?param=160y160'"
               />
+              <!-- 播放数量 -->
+              <div
+                id="views"
+                class="el-icon-caret-right"
+              >
+                {{ $arrangement(item.playCount) }}
+              </div>
               <i
                 class="el-icon-video-play"
                 @click="goInfoPage(item.id)"
@@ -268,9 +275,9 @@ export default {
         background-color: rgba(#000, .3);
         z-index: 10;
         text-align: center;
-        line-height: 220px;
+        line-height: 140px;
         color: rgb(230, 230, 230);
-        font-size: 50px;
+        font-size: 30px;
         opacity: 0;
         transition: all .5s;
       }

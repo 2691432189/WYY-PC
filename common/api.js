@@ -43,12 +43,10 @@ export default {
   },
 
   // 获取用户歌单方法
-  getUserSongList: (uid) => {
+  getUserSongList: (uid, limit) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get(
-          '/user/playlist?uid=' + uid
-        )
+        axios.get(`/user/playlist?uid=${uid}&limit=${limit || 99}&time=${new Date()}`)
       )
     })
   },
@@ -86,7 +84,7 @@ export default {
   getMyMusicCloudDisk: (page) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get(`/user/cloud?limit=100&offset=${(page - 1) * 100 || 0}`)
+        axios.get(`/user/cloud?limit=100&offset=${(page - 1) * 100 || 0}&time=${new Date()}`)
       )
     })
   },
@@ -113,7 +111,7 @@ export default {
   getDetailsPage: (id) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get('/playlist/detail?id=' + id)
+        axios.get(`/playlist/detail?id=${id}&time=${new Date()}`)
       )
     })
   },
@@ -131,7 +129,7 @@ export default {
   getLikeMusicList: (uid) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get('/likelist?uid=' + uid)
+        axios.get(`/likelist?uid=${uid}&time=${new Date()}`)
       )
     })
   },
@@ -154,7 +152,7 @@ export default {
     })
   },
 
-  // 获取歌单收藏列表
+  // 获取歌单收藏者列表
   getCollectorList: (id, page) => {
     return new Promise((resolve) => {
       resolve(
@@ -185,7 +183,7 @@ export default {
   getReCommendedPlaylist: () => {
     return new Promise((resolve) => {
       resolve(
-        axios.get('/personalized?limit=16')
+        axios.get('/personalized?limit=36')
       )
     })
   },
@@ -330,6 +328,24 @@ export default {
     return new Promise((resolve) => {
       resolve(
         axios.get('/related/allvideo?id=' + id)
+      )
+    })
+  },
+
+  // 获取用户信息
+  getUserInfo: (userId) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/user/detail?uid=' + userId)
+      )
+    })
+  },
+
+  // 获取用户动态
+  getUserEvent: (userId, lasttime) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/user/event?uid=${userId}&limit=20&lasttime=${lasttime || -1}`)
       )
     })
   }

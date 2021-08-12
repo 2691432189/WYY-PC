@@ -6,8 +6,14 @@
         <el-row>
           <!-- logo -->
           <el-col :span="3">
-            <i class="el-icon-video-play icon" />
-            云音乐
+            <a
+              style="cursor:pointer;"
+              href="https://github.com/2691432189/WYY-PC/tree/master"
+              target="blank"
+            >
+              <i class="el-icon-video-play icon" />
+              云音乐
+            </a>
           </el-col>
           <!-- logo -->
           <el-col :span="16">
@@ -147,12 +153,23 @@
               <span slot="title">音乐云盘</span>
             </el-menu-item>
             <div class="findMusic">
-              我的歌单
+              创建的歌单
               <i class="el-icon-arrow-down" />
             </div>
             <el-menu-item
               :index="'/DetailsPage' + index + '/' + item.id"
-              v-for="(item, index) in UserSongList"
+              v-for="(item, index) in mySongList"
+              :key="item.id"
+            >
+              <span slot="title">{{ item.name }}</span>
+            </el-menu-item>
+            <div class="findMusic">
+              收藏的歌单
+              <i class="el-icon-arrow-down" />
+            </div>
+            <el-menu-item
+              :index="'/DetailsPage' + index + '/' + item.id"
+              v-for="(item, index) in collectSongList"
               :key="item.id"
             >
               <span slot="title">{{ item.name }}</span>
@@ -324,7 +341,8 @@ export default {
       // 用户信息
       userInfo: {
         img: window.localStorage.getItem('img') || '',
-        name: window.localStorage.getItem('name') || ''
+        name: window.localStorage.getItem('name') || '',
+        userId: window.localStorage.getItem('uid') || ''
       },
       // 侧边栏索引
       sidebarIndex: '',
@@ -360,7 +378,11 @@ export default {
         ]
       },
       // 用户歌单列表
-      UserSongList: [],
+      userSongList: [],
+      //  用户创建的歌单
+      mySongList: [],
+      //  用户收藏的歌单
+      collectSongList: [],
       // 是否禁用注册按钮
       whetherToDisableRegistrationBtn: true,
       // 是否禁用发送验证码按钮
@@ -417,7 +439,7 @@ export default {
       if (!window.localStorage.getItem('login')) {
         this.whetherShowLoginDialogBox = true
       } else {
-        this.$message.error('您已登录')
+        this.$router.push('/UserInfo/' + this.userInfo.userId)
       }
     },
     // 登录方法
@@ -449,6 +471,7 @@ export default {
         window.localStorage.setItem('login', true)
         this.userInfo.img = res.profile.avatarUrl
         this.userInfo.name = res.profile.nickname
+        this.userInfo.userId = res.profile.userId
         // 调用获取用户歌单方法
         this.getUserSongList()
       }
@@ -456,13 +479,26 @@ export default {
     // 获取用户歌单方法
     async getUserSongList () {
       const { data: res } = await this.$http.getUserSongList(window.localStorage.getItem('uid'))
-      this.UserSongList = res.playlist
+      const mySongList = []
+      const collectSongList = []
+      if (res.playlist) {
+        res.playlist.forEach(item => {
+          if (item.userId === parseInt(this.userInfo.userId)) {
+            mySongList.push(item)
+          } else {
+            collectSongList.push(item)
+          }
+        })
+      }
+      this.mySongList = mySongList
+      this.collectSongList = collectSongList
+      this.userSongList = res.playlist
     },
     // 退出登录方法
     async signOut () {
       const { data: res } = await this.$http.getUserSongList(window.localStorage.getItem('uid'))
       if (res.code !== 200) return this.$message.error('退出失败')
-      this.UserSongList = []
+      this.userSongList = []
       this.userInfo.img = ''
       this.userInfo.name = ''
       window.localStorage.removeItem('uid')

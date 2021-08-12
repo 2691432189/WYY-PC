@@ -34,7 +34,7 @@
               :src="detailsPageInfo.creator.avatarUrl+'?param=50y50'"
               fit="cover"
             />
-            <span>{{ detailsPageInfo.creator.nickname }}</span>
+            <span @click="goUserInfo(detailsPageInfo.creator.userId)">{{ detailsPageInfo.creator.nickname }}</span>
             <span>{{ this.$timeFilter(detailsPageInfo.createTime) +'创建' }}</span>
           </div>
           <!-- 用户名 -->
@@ -172,7 +172,7 @@
             <span>
               <!-- 评论 -->
               <div class="comment">
-                <span>{{ item.user.nickname }}: </span>
+                <span @click="goUserInfo(item.user.userId)">{{ item.user.nickname }}: </span>
                 <span>{{ item.content }}</span>
               </div>
               <!-- 评论 -->
@@ -182,7 +182,7 @@
                 v-for="(item1,index1) in item.beReplied"
                 :key="index1"
               >
-                <span>@{{ item1.user.nickname }}: </span>
+                <span @click="goUserInfo(item1.user.userId)">@{{ item1.user.nickname }}: </span>
                 <span>{{ item1.content }}</span>
               </div>
               <!-- 回复 -->
@@ -228,7 +228,9 @@
               />
               <!-- 歌单收藏者头像 -->
               <div>
-                <div>{{ item.nickname }}: </div>
+                <div @click="goUserInfo(item.userId)">
+                  {{ item.nickname }}
+                </div>
                 <div>{{ item.signature }}</div>
               </div>
             </el-col>
@@ -270,7 +272,8 @@ export default {
       detailsPageInfo: {
         creator: {
           avatarUrl: 'placeholder'
-        }
+        },
+        coverImgUrl: 'placeholder'
       },
       // 音乐列表
       musicList: [],
@@ -395,6 +398,10 @@ export default {
       this.getCollectorList(page)
       // 翻页后自动回到顶部
       window.document.querySelector('.backtop').click()
+    },
+    // 跳转用户信息页
+    goUserInfo (userId) {
+      this.$router.push('/UserInfo/' + userId)
     }
   },
   watch: {
@@ -454,6 +461,7 @@ export default {
         padding-left: 15px;
         font-size: 12px;
         color: #218ac7;
+        cursor:pointer;
       }
       span:nth-child(3){
         color: #ccc;
@@ -528,6 +536,7 @@ export default {
       font-size: 13px;
       span:nth-child(1){
         color: #537eaf;
+        cursor:pointer;
       }
        span:nth-child(2){
         color: #52504e;
@@ -560,8 +569,9 @@ export default {
       width: 260px;
       // 歌单收藏者姓名
       &:nth-child(1){
-      font-size: 14px;
-      color: #000000;
+        font-size: 14px;
+        color: #537eaf;
+        cursor:pointer;
       }
       // 歌单收藏者签名
       &:nth-child(2){

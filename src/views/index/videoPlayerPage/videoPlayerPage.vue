@@ -76,6 +76,13 @@
               :src="item.coverUrl+'?param=150y80'"
               fit="cover"
             />
+            <!-- 播放数量 -->
+            <div
+              id="views"
+              class="el-icon-caret-right"
+            >
+              {{ $arrangement(item.durationms) }}
+            </div>
           </div>
           <!-- 相关视频推荐信息 -->
           <div id="relatedVideoInfo">
@@ -320,6 +327,17 @@ export default {
       // 相关视频推荐封面
       #relatedVideoImg{
         flex: 10;
+        position: relative;
+      }
+      #views {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        font-size: 12px;
+        padding: 3px 6px;
+        color: rgb(230, 230, 230);
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 0 5px 0 10px;
       }
       // 相关视频推荐信息
       #relatedVideoInfo {

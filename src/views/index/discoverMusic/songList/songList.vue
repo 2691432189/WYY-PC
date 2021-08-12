@@ -27,15 +27,22 @@
       class="reCommendedPlay"
     >
       <el-col
-        :span="6"
+        :span="4"
         v-for="item in musicList.playlists"
         :key="item.id"
       >
         <div>
           <el-image
             style="width: 100%; height: 80%; border-radius: 10px"
-            :src="item.coverImgUrl+'?param=160y160'"
+            :src="item.coverImgUrl+'?param=100y100'"
           />
+          <!-- 播放数量 -->
+          <div
+            id="views"
+            class="el-icon-caret-right"
+          >
+            {{ $arrangement(item.playCount) }}
+          </div>
           <i
             class="el-icon-video-play"
             @click="goInfoPage(item.id)"
@@ -140,51 +147,6 @@ export default {
       }
       a:hover{
         color:rgb(20, 20, 20);
-      }
-    }
-  }
-  // 歌单
-  .reCommendedPlay {
-    flex-wrap: wrap;
-    // 歌单名
-    .el-col{
-      margin-top: 30px;
-      .reCommendedPlayName {
-        margin-bottom: 20px;
-        font-size: 13px;
-        // 鼠标变小手
-        cursor:pointer;
-        // 多行溢出隐藏
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-      }
-      div:nth-child(1) {
-        // 鼠标变小手
-        cursor:pointer;
-        position: relative;
-        // 图片遮罩层
-        i {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 98%;
-          border-radius: 8px;
-          background-color: rgba(#000, .3);
-          z-index: 10;
-          text-align: center;
-          line-height: 220px;
-          color: rgb(230, 230, 230);
-          font-size: 50px;
-          opacity: 0;
-          transition: all .5s;
-        }
-        &:hover i {
-          opacity: 1;
-        }
       }
     }
   }

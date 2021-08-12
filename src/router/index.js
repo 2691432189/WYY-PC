@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Index from '../components/index.vue'
-import DiscoverMusic from '../components/index/discoverMusic/discoverMusic.vue' // 发现音乐
-import Video from '../components/index/video/video.vue' // 视频
-import DetailsPage from '../components/index/detailsPage/detailsPage.vue' // 歌单详情页
-import PersonalRecommendation from '../components/index/discoverMusic/PersonalRecommendation/PersonalRecommendation.vue' // 个性推荐
-import SongList from '../components/index/discoverMusic/songList/songList.vue' // 歌单
-import Leaderboard from '../components/index/discoverMusic/Leaderboard/Leaderboard.vue'// 排行榜
-import Search from '../components/index/search/search.vue' // 搜索页
-import CloudDisk from '../components/index/cloudDisk/cloudDisk.vue' // 音乐云盘
-import VideoPlayerPage from '../components/index/videoPlayerPage/videoPlayerPage.vue' // 视频播放页
+import Index from '../views/index.vue'
+import DiscoverMusic from '../views/index/discoverMusic/discoverMusic.vue' // 发现音乐
+import Video from '../views/index/video/video.vue' // 视频
+import DetailsPage from '../views/index/detailsPage/detailsPage.vue' // 歌单详情页
+import PersonalRecommendation from '../views/index/discoverMusic/PersonalRecommendation/PersonalRecommendation.vue' // 个性推荐
+import SongList from '../views/index/discoverMusic/songList/songList.vue' // 歌单
+import Leaderboard from '../views/index/discoverMusic/Leaderboard/Leaderboard.vue'// 排行榜
+import Search from '../views/index/search/search.vue' // 搜索页
+import CloudDisk from '../views/index/cloudDisk/cloudDisk.vue' // 音乐云盘
+import VideoPlayerPage from '../views/index/videoPlayerPage/videoPlayerPage.vue' // 视频播放页
+import UserInfo from '../views/index//userInfo/userInfo.vue' //  用户信息
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,7 +39,9 @@ const routes = [
       // 搜索页
       { path: '/Search/:info', component: Search, props: true },
       // 音乐云盘
-      { path: '/CloudDisk', component: CloudDisk }
+      { path: '/CloudDisk', component: CloudDisk },
+      //  用户信息
+      { path: '/UserInfo/:userId', component: UserInfo, props: true }
     ]
   }
 ]
