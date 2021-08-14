@@ -11,18 +11,23 @@
       class="backtop"
     />
     <!-- 回到顶部 -->
+    <div id="allvideo">
+      全部视频
+    </div>
     <!-- 热门分类 -->
     <div class="hotVideoSortNav">
       <div>
-        <p>{{ cideoSortCat }}</p>
+        <p>{{ currentSortCat }}</p>
         <i class="el-icon-arrow-right" />
       </div>
       <div>
         <a
+          :class="{sortItem:'推荐'===currentSortCat}"
           href="javascript:;"
           @click="changeSort(null,'推荐')"
         >推荐</a>
         <a
+          :class="{sortItem:item.name===currentSortCat}"
           href="javascript:;"
           v-for="(item, index) in hotVideoSortList"
           :key="index"
@@ -85,9 +90,9 @@ export default {
       // 热门歌单分类列表
       hotVideoSortList: [],
       // 当前分类
-      cideoSortCat: '推荐',
+      currentSortCat: '推荐',
       // 当前分类id
-      cideoSortId: null,
+      currentSortId: null,
       // 视频列表
       videoList: [],
       // 视频列表当前页
@@ -108,20 +113,20 @@ export default {
         if (res.code !== 200) return this.$message.error('获取视频列表失败')
         if (res.datas.length === 0) return this.$message.error('暂无更多推荐')
         this.videoList = [...this.videoList, ...res.datas]
-        this.cideoSortId = null
+        this.currentSortId = null
         this.videoListage++
       } else {
         const { data: res } = await this.$http.getVideoGroupList(id, page)
         if (res.code !== 200) return this.$message.error('获取视频列表失败')
         if (res.datas.length === 0) return this.$message.error('暂无更多视频')
         this.videoList = [...this.videoList, ...res.datas]
-        this.cideoSortId = id
+        this.currentSortId = id
         this.videoListage++
       }
     },
     // 加载更多视频方法
     loadMoreVideo () {
-      this.getVideoList(this.cideoSortId, this.videoListage)
+      this.getVideoList(this.currentSortId, this.videoListage)
     },
     // 跳转视频播放页
     async  playVideo (id) {
@@ -129,10 +134,10 @@ export default {
     },
     // 切换分类
     changeSort (id, name) {
-      if (name === this.cideoSortCat) return this.$message.error(`已经在${name}分类了哦~`)
+      if (name === this.currentSortCat) return this.$message.error(`已经在${name}分类了哦~`)
       this.videoList = []
       this.videoListage = 0
-      this.cideoSortCat = name
+      this.currentSortCat = name
       this.getVideoList(id, this.videoListage)
     }
   },
@@ -150,6 +155,11 @@ export default {
   min-height: 610px;
   height: 88%;
   padding: 0 80px;
+}
+#allvideo {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 20px 0 10px 0;
 }
 // 分类样式
 .hotVideoSortNav {

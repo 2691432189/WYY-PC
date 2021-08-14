@@ -1,17 +1,19 @@
 <template>
   <div class="songList">
     <!-- 热门分类 -->
-    <div class="hotMusicSortNav">
+    <div class="mvSortNav">
       <div>
         <p>{{ musicList.cat }}</p>
         <i class="el-icon-arrow-right" />
       </div>
       <div>
         <a
+          :class="{sortItem:'全部'===musicList.cat}"
           href="javascript:;"
           @click="getSongList('全部')"
         >全部</a>
         <a
+          :class="{sortItem:item.name===musicList.cat}"
           href="javascript:;"
           v-for="(item, index) in hotMusicSortList"
           :key="index"
@@ -120,7 +122,7 @@ export default {
 
 <style lang="less" scoped>
   // 分类样式
-  .hotMusicSortNav {
+  .mvSortNav {
     height: 30px;
     padding-top: 30px;
     position: relative;
@@ -150,4 +152,5 @@ export default {
       }
     }
   }
+
 </style>

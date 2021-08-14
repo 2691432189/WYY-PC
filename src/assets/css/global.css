@@ -164,3 +164,11 @@ li{
   line-height: 60px;
   cursor:pointer;
 }
+
+/* 被选中的分类项样式 */
+.sortItem {
+  color: #ec4141 !important;
+  background-color: #fcebeb;
+  padding: 1px 5px;
+  border-radius: 9px;
+}

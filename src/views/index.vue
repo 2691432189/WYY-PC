@@ -149,6 +149,9 @@
             <el-menu-item index="/Video">
               <span slot="title">视频</span>
             </el-menu-item>
+            <el-menu-item index="/Mv">
+              <span slot="title">MV</span>
+            </el-menu-item>
             <el-menu-item index="/CloudDisk">
               <span slot="title">音乐云盘</span>
             </el-menu-item>

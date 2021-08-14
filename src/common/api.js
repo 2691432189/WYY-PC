@@ -348,5 +348,50 @@ export default {
         axios.get(`/user/event?uid=${userId}&limit=20&lasttime=${lasttime || -1}`)
       )
     })
+  },
+
+  // 获取MV列表
+  getMvList: (area, type, order, offset) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get(`/mv/all?limit=30&area=${area}&type=${type}&order=${order}&offset=${offset}`)
+      )
+    })
+  },
+
+  // 获取Mv详情
+  getMvDetails: (mvId) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/mv/detail?mvid=' + mvId)
+      )
+    })
+  },
+
+  // 获取MVUrl
+  getMvUrl: (mvId) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/mv/url?id=' + mvId)
+      )
+    })
+  },
+
+  // 获取MV评论
+  getMvComment: (mvId) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/comment/mv?id=' + mvId)
+      )
+    })
+  },
+
+  // 获取相关MV
+  getRelatedMv: (mvId) => {
+    return new Promise((resolve) => {
+      resolve(
+        axios.get('/simi/mv?mvid=' + mvId)
+      )
+    })
   }
 }
