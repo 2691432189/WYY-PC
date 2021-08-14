@@ -4,9 +4,9 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
-import api from '../common/api'
-import { play } from '../common/play'
-import utils from '../common/utils'
+import api from './common/api'
+import { play } from './common/play'
+import utils from './common/utils'
 
 Vue.prototype.$http = api
 Vue.prototype.$play = play

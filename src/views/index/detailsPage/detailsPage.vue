@@ -150,6 +150,13 @@
               </template>
             </el-table-column>
           </el-table>
+          <!-- 加载更多 -->
+          <div
+            id="loadMore"
+            @click="loadMore()"
+          >
+            加载更多...
+          </div>
         </el-tab-pane>
         <!-- 歌曲列表 -->
         <el-tab-pane
@@ -292,7 +299,8 @@ export default {
       // 歌单收藏者列表
       collectorList: {},
       // 歌单收藏者当前页
-      collectorPage: 1
+      collectorPage: 1,
+      num: 0
 
     }
   },
@@ -320,10 +328,12 @@ export default {
     },
     // 获取音乐详细信息方法
     async getMusicUrl () {
-      this.$play(this, this.trackIds)
+      const idList = this.trackIds.slice(this.num, this.num + 50)
+      this.$play(this, idList)
         .then((res) => {
-          this.musicUrlList = res.musicUrlList
-          this.musicList = res.songs
+          this.musicUrlList = [...this.musicUrlList, ...res.musicUrlList]
+          this.musicList = [...this.musicList, ...res.songs]
+          this.num += 50
         })
     },
     // 获取喜欢音乐列表方法
@@ -402,10 +412,22 @@ export default {
     // 跳转用户信息页
     goUserInfo (userId) {
       this.$router.push('/UserInfo/' + userId)
+    },
+    // 加载更多音乐方法
+    loadMore () {
+      if (this.num < this.trackIds.length) {
+        this.getMusicUrl()
+      } else {
+        return this.$message.error('没有更多哟~')
+      }
     }
   },
   watch: {
     id: function () {
+      // 每次切换歌单时将列表清空
+      this.musicUrlList = []
+      this.musicList = []
+      this.num = 0
       // 调用获取歌单详细信息方法
       this.getDetailsPage()
       // 调用获取评论列表

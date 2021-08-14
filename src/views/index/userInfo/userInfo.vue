@@ -21,8 +21,8 @@
         />
         <!-- 加载更多 -->
         <div
-          id="loadMoreVideo"
-          @click="loadMoreVideo()"
+          id="loadMore"
+          @click="loadMore()"
           v-show="userEvent.length===0?false:true"
         >
           加载更多...
@@ -235,8 +235,8 @@ export default {
     goInfoPage (id) {
       this.$router.push('/DetailsPage*/' + id)
     },
-    // 加载更多视频方法
-    loadMoreVideo () {
+    // 加载更多动态方法
+    loadMore () {
       if (this.num % 20 === 0) {
         this.getUserEvent()
       } else {
@@ -283,17 +283,6 @@ export default {
       }
       .el-empty {
         height: 90%;
-      }
-      // 加载更多动态
-      #loadMoreVideo {
-        padding-left: 40px;
-        height: 60px;
-        color: #7e7e7e;
-        font-size: 14px;
-        line-height: 60px;
-        // text-align: center;
-        // 鼠标变小手
-        cursor:pointer;
       }
     }
     // 个人信息

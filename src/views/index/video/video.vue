@@ -70,7 +70,7 @@
     </el-row>
     <!-- 视频列表 -->
     <div
-      id="loadMoreVideo"
+      id="loadMore"
       @click="loadMoreVideo()"
     >
       加载更多...
@@ -178,16 +178,5 @@ export default {
       color:rgb(20, 20, 20);
     }
   }
-}
-// 加载更多视频
-#loadMoreVideo {
-  padding-left: 40px;
-  height: 60px;
-  color: #7e7e7e;
-  font-size: 14px;
-  line-height: 60px;
-  // text-align: center;
-  // 鼠标变小手
-  cursor:pointer;
 }
 </style>
