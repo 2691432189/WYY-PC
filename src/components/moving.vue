@@ -61,8 +61,9 @@
             v-for="(item, index) in image"
             :key="index"
             style="width: 100px; height: 100px;border-radius: 8px;"
-            :src="item.imageUrl"
+            :src="item.imageUrl+'?param=100y100'"
             fit="cover"
+            :preview-src-list="[item.imageUrl]"
           />
         </div>
       </div>
@@ -91,6 +92,7 @@
             style="width: 100px; height: 100px;border-radius: 8px;"
             :src="item.pcRectangleUrl+'?param=100y100'"
             fit="cover"
+            :preview-src-list="[item.pcRectangleUrl]"
           />
         </div>
       </div>
@@ -104,6 +106,7 @@
             style="width: 100px; height: 100px;border-radius: 8px;"
             :src="item.pcRectangleUrl+'?param=100y100'"
             fit="cover"
+            :preview-src-list="[item.pcRectangleUrl]"
           />
         </div>
       </div>
