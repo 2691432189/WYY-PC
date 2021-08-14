@@ -269,7 +269,9 @@ export default {
       height: 60px;
       line-height: 60px;
       font-weight: 700;
-      cursor:pointer;
+      span {
+        cursor:pointer;
+      }
     }
     // 用户信息
     #userInfo {
