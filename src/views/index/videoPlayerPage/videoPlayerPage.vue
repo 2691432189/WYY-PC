@@ -399,6 +399,7 @@ export default {
           }
            span:nth-child(2){
             color: #52504e;
+            line-height: 20px;
           }
         }
         // 评论时间
