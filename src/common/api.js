@@ -215,20 +215,11 @@ export default {
     })
   },
 
-  // 获取搜索音乐结果方法
-  getSearchMusicResult: (info, page) => {
+  // 获取搜索结果方法
+  getSearchResult: (info, page, type) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get(`/cloudsearch?keywords= ${info}&type=1&limit=100&offset=${(page - 1) * 100}`)
-      )
-    })
-  },
-
-  // 获取搜索歌单结果方法
-  getSearchmusicDetailsPageResult: (info, page) => {
-    return new Promise((resolve) => {
-      resolve(
-        axios.get(`/cloudsearch?keywords= ${info}&type=1000&limit=100&offset=${(page - 1) * 100}`)
+        axios.get(`/cloudsearch?keywords= ${info}&type=${type}&limit=50&offset=${(page - 1) * 50}`)
       )
     })
   },

@@ -128,9 +128,21 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="name"
               label="音乐标题"
-            />
+            >
+              <template slot-scope="scope">
+                <div>
+                  {{ scope.row.name }}
+                  <span
+                    id="MvIcon"
+                    v-if="scope.row.mv!==0"
+                    @click="playMv(scope.row.mv)"
+                  >
+                    MV
+                  </span>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="ar[0].name"
               label="歌手"
@@ -420,6 +432,10 @@ export default {
       } else {
         return this.$message.error('没有更多哟~')
       }
+    },
+    // 跳转MV播放页
+    playMv (id) {
+      this.$router.push('/MvPlayerPage/' + id)
     }
   },
   watch: {
@@ -464,7 +480,7 @@ export default {
 
 <style lang="less" scoped>
 .body{
-  height: 90%;
+  height: 100%;
   overflow-x: hidden;
   padding: 30px 0 0 0 ;
   box-sizing: border-box;

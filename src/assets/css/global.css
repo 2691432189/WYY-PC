@@ -172,3 +172,20 @@ li{
   padding: 1px 5px;
   border-radius: 9px;
 }
+
+/* MV图标的样式 */
+#MvIcon {
+  display: inline-block;
+  height: 10px;
+  padding: 1px;
+  border: 1px solid #ec4242;
+  border-radius: 3px;
+  color: #ec4242;
+  font-size: 6px ;
+  line-height: 10px;
+  cursor: pointer;
+}
+#MvIcon:hover {
+  border: 1px solid #f17676;
+  color: #f17676;
+}

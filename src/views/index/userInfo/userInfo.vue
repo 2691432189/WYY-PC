@@ -270,7 +270,7 @@ export default {
     // 动态区
     #eventCount {
       flex: 50;
-      height: 88%;
+      height: 100%;
       overflow: auto;
       // 动态Nav
       #eventCountNav {
@@ -289,7 +289,7 @@ export default {
     #user {
       position: relative;
       flex: 35;
-      height: 88%;
+      height: 100%;
       overflow: auto;
       #userMain {
         position: absolute;

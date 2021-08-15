@@ -46,7 +46,7 @@ export default {
 #discoverMusic {
   overflow: auto;
   min-height: 600px;
-  height: 88%;
+  height: 100%;
 }
 #discoverMusicChildren {
   padding: 0 80px;

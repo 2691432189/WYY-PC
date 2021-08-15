@@ -72,7 +72,7 @@
           <!-- 相关视频推荐封面 -->
           <div id="relatedVideoImg">
             <el-image
-              style="width: 150px; height: 80px; border-radius: 5px;vertical-align: middle"
+              style="width: 140px; height: 80px; border-radius: 5px;vertical-align: middle"
               :src="item.coverUrl+'?param=150y80'"
               fit="cover"
             />
@@ -254,13 +254,13 @@ export default {
 
 <style lang="less" scoped>
   #videoPlayerPage {
-    height: 82vh;
+    height: 100%;
   }
   // 视频播放器页面主体
   #videoPlayerPageMain {
     display: flex;
     width: 95%;
-    height: 98%;
+    height: 100%;
     margin: 0 auto;
   }
   // 视频播放器页面左
@@ -308,7 +308,7 @@ export default {
       }
     }
     #introduce {
-      padding: 15px 0 0 0;
+      padding: 15px 0 15px 0;
       color: #414445;
       font-size: 14px;
     }
@@ -338,7 +338,7 @@ export default {
       #views {
         position: absolute;
         top: 0;
-        right: 15px;
+        right: 25px;
         font-size: 12px;
         padding: 3px 6px;
         color: rgb(230, 230, 230);

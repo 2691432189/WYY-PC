@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBody">
+  <div id="search">
     <el-tabs
       class="detailsPageTabs"
       value="first"
@@ -59,7 +59,7 @@
         <el-pagination
           layout="prev, pager, next"
           :total="musicList.songCount ||0"
-          :page-size="100"
+          :page-size="50"
           :current-page="musicListPage"
           @current-change="musicListCurrentChange"
         />
@@ -111,7 +111,7 @@
         <el-pagination
           layout="prev, pager, next"
           :total="musicDetailsPageList.playlistCount ||0"
-          :page-size="100"
+          :page-size="50"
           :current-page="musicDetailsPage"
           @current-change="musicDetailsCurrentChange"
         />
@@ -148,13 +148,13 @@ export default {
     // 获取搜索音乐结果方法
     async  getSearchMusicResult (page) {
       page = page || 1
-      const { data: res } = await this.$http.getSearchMusicResult(this.info, page)
+      const { data: res } = await this.$http.getSearchResult(this.info, page, 1)
       this.musicList = res.result
     },
     // 获取搜索歌单结果方法
     async  getSearchmusicDetailsPageResult (page) {
       page = page || 1
-      const { data: res } = await this.$http.getSearchmusicDetailsPageResult(this.info, page)
+      const { data: res } = await this.$http.getSearchResult(this.info, page, 1000)
       this.musicDetailsPageList = res.result
     },
     // 获取喜欢音乐列表方法
@@ -228,7 +228,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+#search {
+  height: 100%;
+  overflow: auto;
+}
 .el-tabs {
   margin-top: 20px;
   button {

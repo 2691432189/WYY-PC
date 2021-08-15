@@ -127,7 +127,7 @@ export default {
       this.getMvList()
     },
     // 跳转MV播放页
-    async  playMv (id) {
+    playMv (id) {
       this.$router.push('/MvPlayerPage/' + id)
     },
     // 切换分类
@@ -158,7 +158,7 @@ export default {
 #mv {
   overflow: auto;
   min-height: 610px;
-  height: 88%;
+  height: 100%;
   padding: 0 80px;
 }
 #allMv {
@@ -171,7 +171,7 @@ export default {
   color: #252525;
   font-size: 14px;
   div {
-    padding: 10px 0 0 36px;
+    padding: 20px 0 0 36px;
   }
   span {
     margin-left: 30px;

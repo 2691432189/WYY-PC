@@ -80,7 +80,16 @@
             @dblclick="playMusic(item.id)"
           >
             <div>{{ item.name }}</div>
-            <div>{{ item.song.artists[0].name }}</div>
+            <div>
+              {{ item.song.artists[0].name }}
+              <span
+                id="MvIcon"
+                v-if="item.song.mvid!==0"
+                @click="playMv(item.song.mvid)"
+              >
+                MV
+              </span>
+            </div>
           </div>
         </el-col>
       </el-row>
@@ -138,6 +147,10 @@ export default {
             random: Math.random()
           })
         })
+    },
+    // 跳转MV播放页
+    playMv (id) {
+      this.$router.push('/MvPlayerPage/' + id)
     }
   },
   created () {
@@ -161,6 +174,7 @@ export default {
 }
 .newMusic {
   transform: translateX(50px);
+  padding-bottom: 20px;
   .el-col {
     margin: 40px 44px 0 0;
     height: 60px;

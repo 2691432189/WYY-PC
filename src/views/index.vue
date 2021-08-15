@@ -538,6 +538,14 @@ export default {
             })
         }
       })
+    },
+    // 动态控制主体高度
+    dynamicControlMainBodyHeight () {
+      //  动态控住主体的高度(为了适配笔记本的放大125%，实属无奈之举)
+      const mainBody = window.document.querySelectorAll('#mainBody')
+      mainBody.forEach(item => {
+        item.style.height = (window.innerHeight - 60 - 76) + 'px'
+      })
     }
   },
   components: {
@@ -591,6 +599,9 @@ export default {
   created () {
     // 调用获取用户歌单
     this.getUserSongList()
+  },
+  mounted () {
+    this.dynamicControlMainBodyHeight()
   }
 }
 </script>
@@ -678,10 +689,6 @@ export default {
 .el-main {
   padding: 0px 20px 0px;
   overflow: auto;
-}
-//  控住主体的高度
-#mainBody {
-  height: 92vh;
 }
 
 #aplayer {

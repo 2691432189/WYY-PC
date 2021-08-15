@@ -1,11 +1,7 @@
 export async function play (ts, songInfo) {
   var url = ''
   const musicUrlList = []
-  if (songInfo.length > 100) {
-    songInfo.length = 100
-  }
   songInfo.forEach((element, index) => {
-    // 限制请求音乐的条数，将每个歌单最大数量限制到150条
     if (index === songInfo.length - 1) {
       url += element.songId ? element.songId : element.id
     } else {

@@ -233,7 +233,7 @@ export default {
 #cloudDisk {
   overflow: auto;
   min-height: 610px;
-  height: 88%;
+  height: 100%;
   padding: 0 80px;
 }
 .myMusicCloudDisk {
