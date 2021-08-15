@@ -133,7 +133,7 @@
       <el-container>
         <!-- 侧边栏 -->
         <el-aside
-          width="200px"
+          width="220px"
           id="mainBody"
         >
           <el-menu
@@ -146,13 +146,22 @@
             <el-menu-item index="/DiscoverMusic">
               <span slot="title">发现音乐</span>
             </el-menu-item>
-            <el-menu-item index="/Video">
+            <el-menu-item
+              index="/Video"
+              @click="isLogin()"
+            >
               <span slot="title">视频</span>
             </el-menu-item>
-            <el-menu-item index="/Mv">
+            <el-menu-item
+              index="/Mv"
+              @click="isLogin()"
+            >
               <span slot="title">MV</span>
             </el-menu-item>
-            <el-menu-item index="/CloudDisk">
+            <el-menu-item
+              index="/CloudDisk"
+              @click="isLogin()"
+            >
               <span slot="title">音乐云盘</span>
             </el-menu-item>
             <div class="findMusic">
@@ -380,8 +389,6 @@ export default {
           { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
         ]
       },
-      // 用户歌单列表
-      userSongList: [],
       //  用户创建的歌单
       mySongList: [],
       //  用户收藏的歌单
@@ -395,6 +402,15 @@ export default {
     }
   },
   methods: {
+    // 判断是否已经登录
+    isLogin () {
+      if (!window.localStorage.getItem('login')) {
+        this.$message.error('请登录')
+        window.setTimeout(() => {
+          this.whetherShowLoginDialogBox = true
+        }, 500)
+      }
+    },
     // 页面前进后退方法
     btnGo (info) {
       if (info === 'go') {
@@ -495,15 +511,17 @@ export default {
       }
       this.mySongList = mySongList
       this.collectSongList = collectSongList
-      this.userSongList = res.playlist
     },
     // 退出登录方法
     async signOut () {
       const { data: res } = await this.$http.getUserSongList(window.localStorage.getItem('uid'))
       if (res.code !== 200) return this.$message.error('退出失败')
-      this.userSongList = []
       this.userInfo.img = ''
       this.userInfo.name = ''
+      //  用户创建的歌单
+      this.mySongList = []
+      //  用户收藏的歌单
+      this.collectSongList = []
       window.localStorage.removeItem('uid')
       window.localStorage.removeItem('img')
       window.localStorage.removeItem('name')

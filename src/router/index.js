@@ -58,12 +58,11 @@ const router = new VueRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.fullPath === '/Video' || to.fullPath === '/CloudDisk') {
+  if (to.fullPath === '/Video' || to.fullPath === '/CloudDisk' || to.fullPath === '/Mv') {
     const login = window.localStorage.getItem('login')
     if (login) return next()
     next('/DiscoverMusic')
-    // this.$message.error('请登录')
-  } else {
+  } else if (to.fullPath !== from.fullPath) {
     next()
   }
 })
