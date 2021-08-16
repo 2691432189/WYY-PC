@@ -135,6 +135,7 @@
         <el-aside
           width="220px"
           id="mainBody"
+          ref="aside"
         >
           <el-menu
             :default-active="sidebarIndex"
@@ -190,7 +191,10 @@
         </el-aside>
         <!-- 侧边栏 -->
         <!-- 主体 -->
-        <el-main id="mainBody">
+        <el-main
+          id="mainBody"
+          ref="main"
+        >
           <router-view />
         </el-main>
         <!-- 主体 -->
@@ -560,10 +564,8 @@ export default {
     // 动态控制主体高度
     dynamicControlMainBodyHeight () {
       //  动态控住主体的高度(为了适配笔记本的放大125%，实属无奈之举)
-      const mainBody = window.document.querySelectorAll('#mainBody')
-      mainBody.forEach(item => {
-        item.style.height = (window.innerHeight - 60 - 76) + 'px'
-      })
+      this.$refs.aside.$el.style.height = (window.innerHeight - 60 - 76) + 'px'
+      this.$refs.main.$el.style.height = (window.innerHeight - 60 - 76) + 'px'
     }
   },
   components: {
