@@ -1,9 +1,9 @@
 // 导入axios包
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://47.97.106.32:8889'
 // http://localhost:3000
-// http://42.193.111.124:8889
+// http://47.97.106.32:8889
 axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
 
 export default {
@@ -26,7 +26,7 @@ export default {
   login: (loginInfo) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get('/login/cellphone', {
+        axios.get(`/login/cellphone?time=${new Date()}`, {
           params: loginInfo
         })
       )
@@ -37,7 +37,7 @@ export default {
   getLoginUserInfo: () => {
     return new Promise((resolve) => {
       resolve(
-        axios.get('/user/account')
+        axios.get(`/user/account?time=${new Date()}`)
       )
     })
   },
@@ -55,7 +55,7 @@ export default {
   signOut: () => {
     return new Promise((resolve) => {
       resolve(
-        axios.get('/logout')
+        axios.get(`/logout?time=${new Date()}`)
       )
     })
   },
@@ -84,7 +84,7 @@ export default {
   getMyMusicCloudDisk: (page) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get(`/user/cloud?limit=100&offset=${(page - 1) * 100 || 0}&time=${new Date()}`)
+        axios.get(`/user/cloud?limit=100&offset=${(page - 1) * 100 || 0}&time=${new Date()}&time=${new Date()}`)
       )
     })
   },

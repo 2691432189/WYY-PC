@@ -148,7 +148,7 @@ export default {
       this.$http({
         method: 'post',
         // 请自行指定完整上传地址
-        url: `http://localhost:3000/cloud?time=${Date.now()}}`,
+        url: `http://47.97.106.32:8889/cloud?time=${Date.now()}}`,
         headers: {
           'Content-Type': 'multipart/form-data'
         },
