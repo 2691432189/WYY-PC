@@ -622,6 +622,9 @@ export default {
   },
   mounted () {
     this.dynamicControlMainBodyHeight()
+    window.onresize = () => {
+      this.dynamicControlMainBodyHeight()
+    }
   }
 }
 </script>
@@ -631,7 +634,6 @@ export default {
 .index-page {
   margin: 0 auto;
   width: 100%;
-  height: 730px;
   background-color: #ffffff;
 }
 // 头部
