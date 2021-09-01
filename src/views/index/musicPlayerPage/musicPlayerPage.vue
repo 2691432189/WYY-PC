@@ -37,27 +37,25 @@
                 </div>
               </div>
             </div>
-            <div
-              id="translation"
-              v-show="isShowTranslation"
-            >
-              <i
-                class="el-icon-notebook-2"
-                :class="{translationBtn:isTranslation}"
-                @click="SwitchLyricsStatus"
-              />
-            </div>
           </div>
           <!-- 歌词 -->
           <div id="lyrics">
-            <ul :style="[{position: 'relative'},{top:-64.90*(lyricIndex-1)+'px'}]">
+            <ul
+              :style="{ top: -lyricTopNum + 'px' }"
+              ref="lyricsUl"
+            >
               <li
                 v-for="(item, index) in lyric"
                 :key="index"
                 id="lyrics-item"
-                :class="{'current-lyrics-item':index===lyricIndex}"
+                :class="{'current-lyrics-item':index === lyricIndex}"
               >
-                {{ item.lyric }}
+                <div
+                  v-for="(lyrics, indexs) in item.lyric"
+                  :key="indexs"
+                >
+                  {{ lyrics }}
+                </div>
               </li>
             </ul>
           </div>
@@ -132,10 +130,6 @@ export default {
       type: Array,
       default: () => []
     },
-    isShowTranslation: {
-      type: Boolean,
-      default: false
-    },
     musicComment: {
       type: Array,
       default: () => []
@@ -147,24 +141,10 @@ export default {
       lyricIndex: 0,
       currentTimes: 0,
       value: this.val,
-      isTranslation: false
-    }
-  },
-  methods: {
-    SwitchLyricsStatus () {
-      this.isTranslation = !this.isTranslation
+      lyricTopNum: 0
     }
   },
   watch: {
-    isTranslation (newVal) {
-      this.$emit('translation', newVal)
-    },
-    val: {
-      handler: function () {
-        this.isTranslation = false
-      },
-      deep: true
-    },
     // 侦听播放暂停
     drawer (drawer) {
       this.drawers = drawer
@@ -185,6 +165,9 @@ export default {
     },
     lyric () {
       this.lyricIndex = 0
+    },
+    lyricIndex () {
+      this.lyricTopNum = (this.lyricIndex - 1) * 85.6
     }
   }
 }
@@ -281,18 +264,6 @@ export default {
       .songImageSpin {
         animation-play-state: paused !important;
       }
-      // 歌词翻译
-      #translation {
-        text-align: center;
-        padding-top: 50px;
-        font-size: 18px;
-        i {
-          cursor: pointer;
-        }
-        .translationBtn {
-          color: #ec4141;
-        }
-      }
     }
     // 歌词
     #lyrics {
@@ -301,12 +272,14 @@ export default {
       overflow: hidden;
       ul {
         transition: all 1s;
+        position: relative;
       }
       #lyrics-item {
         padding: 22px 40px;
         text-align: center;
         font-size: 16px;
         color: #5e5e5e;
+        height: 41.6px;
       }
       // 当前播放时间对应的歌词
       .current-lyrics-item {

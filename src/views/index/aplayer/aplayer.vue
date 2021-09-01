@@ -6,14 +6,12 @@
       :val="playObj"
       :is-play-pause="controlPlayPause"
       :current-time="currentTime|timeFilters"
-      :lyric="isTranslation?lyricTranslation:lyric"
-      :is-show-translation="isShowTranslation"
+      :lyric="lyric"
       :music-comment="musicComment"
-      @translation="translation"
     />
     <audio
       :src="playObj.url"
-      :loop="isSingleCycle"
+      :loop="playWay===2"
       autoplay
       @ended="endeds"
       @timeupdate="timeupdates"
@@ -110,8 +108,8 @@
         <!-- 单曲循环 -->
         <div id="singleCycle">
           <i
-            :class="[{'el-icon-refresh':!isSingleCycle},{'el-icon-refresh-left':isSingleCycle}]"
-            @click="singleCycle"
+            :class="[{'el-icon-refresh':playWay===1},{'el-icon-refresh-left':playWay===2},{'el-icon-loading':playWay===3}]"
+            @click="singleCycle(playWay)"
           />
         </div>
         <!-- 播放队列 -->
@@ -189,10 +187,9 @@ export default {
         index: 0
       },
       lyric: [{
-        lyric: '当前没有播放音乐哦~',
+        lyric: ['当前没有播放音乐哦~'],
         time: '00:00'
       }],
-      lyricTranslation: [],
       // 歌曲当前播放时间
       currentTime: 0,
       // 歌曲总播放时间
@@ -201,9 +198,7 @@ export default {
       //  音乐评论
       musicComment: [],
       // 是否开启单曲循环
-      isSingleCycle: false,
-      // 是否启用歌词翻译
-      isTranslation: false
+      playWay: 1
     }
   },
   methods: {
@@ -242,8 +237,11 @@ export default {
     },
     // 自动播放音乐列表中的下一首音乐
     endeds () {
-      if (this.isSingleCycle) return
-      this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
+      if (this.playWay === 1) {
+        this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
+      } else if (this.playWay === 3) {
+        this.indexs = Math.floor(Math.random() * this.data.length)
+      }
     },
     // 改变音量
     changeVolume (num) {
@@ -268,13 +266,25 @@ export default {
     async getLyrics (id) {
       const { data: res } = await this.$http.getLyrics(id)
       if (res.lrc) {
-        this.lyric = this.$lyricsProcess(res.lrc.lyric)
+        const lyric = this.$lyricsProcess(res.lrc.lyric)
+        let lyricTranslation = []
         if (res.tlyric.lyric) {
-          this.lyricTranslation = this.$lyricsProcess(res.tlyric.lyric)
+          lyricTranslation = this.$lyricsProcess(res.tlyric.lyric)
         }
+        lyric.forEach(item => {
+          const lyric = []
+          lyric.push(item.lyric)
+          for (let i = 0; i < lyricTranslation.length - 1; i++) {
+            if (item.time === lyricTranslation[i].time) {
+              lyric.push(lyricTranslation[i].lyric)
+            }
+          }
+          item.lyric = lyric
+        })
+        this.lyric = lyric
       } else {
         this.lyric = [{
-          lyric: '该音乐暂无歌词哦',
+          lyric: ['该音乐暂无歌词哦'],
           time: '00:00'
         }]
       }
@@ -285,12 +295,14 @@ export default {
       this.musicComment = res.hotComments
     },
     // 更改单曲循环状态
-    singleCycle () {
-      this.isSingleCycle = !this.isSingleCycle
-    },
-    // 控制是否启用歌词翻译
-    translation (is) {
-      this.isTranslation = is
+    singleCycle (way) {
+      if (way === 1) {
+        this.playWay = 2
+      } else if (way === 2) {
+        this.playWay = 3
+      } else if (way === 3) {
+        this.playWay = 1
+      }
     }
   },
   computed: {
@@ -300,14 +312,6 @@ export default {
       return {
         data,
         indexs
-      }
-    },
-    // 动态显示翻译按钮
-    isShowTranslation () {
-      if (this.lyricTranslation.length === 0) {
-        return false
-      } else {
-        return true
       }
     }
   },
