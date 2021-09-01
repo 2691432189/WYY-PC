@@ -6,15 +6,19 @@
       :val="playObj"
       :is-play-pause="controlPlayPause"
       :current-time="currentTime|timeFilters"
-      :lyric="lyric"
+      :lyric="isTranslation?lyricTranslation:lyric"
+      :is-show-translation="isShowTranslation"
       :music-comment="musicComment"
+      @translation="translation"
     />
     <audio
       :src="playObj.url"
+      :loop="isSingleCycle"
       autoplay
       @ended="endeds"
       @timeupdate="timeupdates"
       ref="aplayer"
+      @error="playError"
     />
     <div id="component">
       <!-- 歌曲信息 -->
@@ -103,6 +107,13 @@
             />
           </div>
         </div>
+        <!-- 单曲循环 -->
+        <div id="singleCycle">
+          <i
+            :class="[{'el-icon-refresh':!isSingleCycle},{'el-icon-refresh-left':isSingleCycle}]"
+            @click="singleCycle"
+          />
+        </div>
         <!-- 播放队列 -->
         <div id="PlayQueue">
           <el-popover
@@ -181,16 +192,28 @@ export default {
         lyric: '当前没有播放音乐哦~',
         time: '00:00'
       }],
+      lyricTranslation: [],
       // 歌曲当前播放时间
       currentTime: 0,
       // 歌曲总播放时间
       time: 0,
       drawer: false,
       //  音乐评论
-      musicComment: []
+      musicComment: [],
+      // 是否开启单曲循环
+      isSingleCycle: false,
+      // 是否启用歌词翻译
+      isTranslation: false
     }
   },
   methods: {
+    // 处理播放错误
+    playError () {
+      // 当前音乐播放错误，自动播放下一首
+      this.$message.error('当前音乐播放错误，自动播放下一首~')
+      console.log('当前音乐播放错误，自动播放下一首~')
+      this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
+    },
     // 更改暂停或播放
     isPlayPause () {
       if (this.playObj.url !== undefined) {
@@ -219,6 +242,7 @@ export default {
     },
     // 自动播放音乐列表中的下一首音乐
     endeds () {
+      if (this.isSingleCycle) return
       this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
     },
     // 改变音量
@@ -243,17 +267,11 @@ export default {
     // 获取歌词
     async getLyrics (id) {
       const { data: res } = await this.$http.getLyrics(id)
-      if (res.tlyric) {
-        // 正则表达式分隔歌词
-        const re = /\[([^\]]+)\]([^[]+)/g
-        const lyric = []
-        if (res.lrc.lyric === '') return
-        res.lrc.lyric.replace(re, ($0, $1, $2) => {
-          if ($2 !== '\n') {
-            lyric.push({ time: this.formatTimeToSec($1), lyric: $2 })
-          }
-        })
-        this.lyric = lyric
+      if (res.lrc) {
+        this.lyric = this.$lyricsProcess(res.lrc.lyric)
+        if (res.tlyric.lyric) {
+          this.lyricTranslation = this.$lyricsProcess(res.tlyric.lyric)
+        }
       } else {
         this.lyric = [{
           lyric: '该音乐暂无歌词哦',
@@ -266,14 +284,14 @@ export default {
       const { data: res } = await this.$http.getMusicComment(id, page)
       this.musicComment = res.hotComments
     },
-    // 转化成秒
-    formatTimeToSec (time) {
-      // 分钟和秒分隔开后存放到数组中
-      var arr = time.split('.')
-      // 先把数字进行操作，再进行toFixed转换，最后返回转换成秒的结果
-      return arr[0]
+    // 更改单曲循环状态
+    singleCycle () {
+      this.isSingleCycle = !this.isSingleCycle
+    },
+    // 控制是否启用歌词翻译
+    translation (is) {
+      this.isTranslation = is
     }
-
   },
   computed: {
     // 配合watch动态监听两个属性
@@ -282,6 +300,14 @@ export default {
       return {
         data,
         indexs
+      }
+    },
+    // 动态显示翻译按钮
+    isShowTranslation () {
+      if (this.lyricTranslation.length === 0) {
+        return false
+      } else {
+        return true
       }
     }
   },
@@ -300,19 +326,22 @@ export default {
       this.indexs = index
     },
     changeData () {
+      // 处理音乐列表索引
       for (let i = 0; i < this.data.length; i++) {
         this.data[i].index = i
       }
-      this.controlPlayPause = true
       // 判断该音乐是否有版权
       this.$http.checkMusic(this.data[this.indexs].songId)
         .then(() => {
           this.play(this.data[this.indexs])
           this.getLyrics(this.data[this.indexs].songId)
           this.getMusicComment(this.data[this.indexs].songId, 0)
+          this.controlPlayPause = true
         })
         .catch(() => {
           this.$message.error('该音乐暂无版权哦~')
+          // 当前音乐没版权自动播放下一首
+          this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
         })
     }
   },
@@ -464,7 +493,7 @@ export default {
     font-size: 26px;
     // 音量控件
     #volume {
-      flex: 5;
+      flex: 4;
       display: flex;
       align-items: center;
       // 音量图标
@@ -478,10 +507,21 @@ export default {
         padding-right: 50px;
       }
     }
+    // 单曲循环
+    #singleCycle {
+      flex: 1;
+      text-align: center;
+      i {
+        cursor:pointer;
+      }
+    }
     // 播放队列
     #PlayQueue {
       flex: 2;
-      cursor:pointer;
+      text-align: center;
+      i {
+        cursor:pointer;
+      }
     }
   }
 

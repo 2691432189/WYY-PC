@@ -37,6 +37,16 @@
                 </div>
               </div>
             </div>
+            <div
+              id="translation"
+              v-show="isShowTranslation"
+            >
+              <i
+                class="el-icon-notebook-2"
+                :class="{translationBtn:isTranslation}"
+                @click="SwitchLyricsStatus"
+              />
+            </div>
           </div>
           <!-- 歌词 -->
           <div id="lyrics">
@@ -122,6 +132,10 @@ export default {
       type: Array,
       default: () => []
     },
+    isShowTranslation: {
+      type: Boolean,
+      default: false
+    },
     musicComment: {
       type: Array,
       default: () => []
@@ -132,10 +146,25 @@ export default {
       drawers: false,
       lyricIndex: 0,
       currentTimes: 0,
-      value: this.val
+      value: this.val,
+      isTranslation: false
+    }
+  },
+  methods: {
+    SwitchLyricsStatus () {
+      this.isTranslation = !this.isTranslation
     }
   },
   watch: {
+    isTranslation (newVal) {
+      this.$emit('translation', newVal)
+    },
+    val: {
+      handler: function () {
+        this.isTranslation = false
+      },
+      deep: true
+    },
     // 侦听播放暂停
     drawer (drawer) {
       this.drawers = drawer
@@ -224,7 +253,7 @@ export default {
         height: 300px;
         border-radius: 50%;
         background-color: rgba(0, 0, 0, .3);
-        animation: imgAnimation 5s linear infinite;
+        animation: imgAnimation 10s linear infinite;
       }
       #songImage-2 {
         position: absolute;
@@ -251,6 +280,18 @@ export default {
       // 控制歌曲图片是否旋转
       .songImageSpin {
         animation-play-state: paused !important;
+      }
+      // 歌词翻译
+      #translation {
+        text-align: center;
+        padding-top: 50px;
+        font-size: 18px;
+        i {
+          cursor: pointer;
+        }
+        .translationBtn {
+          color: #ec4141;
+        }
       }
     }
     // 歌词

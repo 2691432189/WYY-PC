@@ -225,26 +225,19 @@ export default {
   components: {
     videoPlayer
   },
-  created () {
-    // 获取MV详细信息
-    this.getMvDetails()
-    // 获取MVUrl
-    this.getMvUrl()
-    // 获取MV评论
-    this.getMvComment()
-    // 获取相关MV
-    this.getRelatedMv()
-  },
   watch: {
-    mvIds () {
+    mvIds: {
+      handler: function () {
       // 获取MV详细信息
-      this.getMvDetails()
-      // 获取MVUrl
-      this.getMvUrl()
-      // 获取MV评论
-      this.getMvComment()
-      // 获取相关MV
-      this.getRelatedMv()
+        this.getMvDetails()
+        // 获取MVUrl
+        this.getMvUrl()
+        // 获取MV评论
+        this.getMvComment()
+        // 获取相关MV
+        this.getRelatedMv()
+      },
+      immediate: true
     }
   }
 }

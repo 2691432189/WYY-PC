@@ -227,26 +227,19 @@ export default {
   components: {
     videoPlayer
   },
-  created () {
-    // 获取视频详细信息
-    this.getVideoDetails()
-    // 获取视频Url
-    this.getVideoUrl()
-    // 获取视频评论
-    this.getVideoComment()
-    // 获取相关视频
-    this.getRelatedVideo()
-  },
   watch: {
-    videoIds () {
+    videoIds: {
+      handler: function () {
       // 获取视频详细信息
-      this.getVideoDetails()
-      // 获取视频Url
-      this.getVideoUrl()
-      // 获取视频评论
-      this.getVideoComment()
-      // 获取相关视频
-      this.getRelatedVideo()
+        this.getVideoDetails()
+        // 获取视频Url
+        this.getVideoUrl()
+        // 获取视频评论
+        this.getVideoComment()
+        // 获取相关视频
+        this.getRelatedVideo()
+      },
+      immediate: true
     }
   }
 }

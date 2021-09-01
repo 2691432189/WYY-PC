@@ -64,5 +64,26 @@ export default {
       ) +
       '座'
     )
+  },
+
+  // 歌词时间转化成秒
+  formatTimeToSec (time) {
+    // 分钟和秒分隔开后存放到数组中
+    var arr = time.split('.')
+    // 先把数字进行操作，再进行toFixed转换，最后返回转换成秒的结果
+    return arr[0]
+  },
+
+  // 歌词处理
+  lyricsProcess (lyrics) {
+    const re = /\[([^\]]+)\]([^[]+)/g
+    const lyric = []
+    if (lyrics === '') return
+    lyrics.replace(re, ($0, $1, $2) => {
+      if ($2 !== '\n') {
+        lyric.push({ time: this.$formatTimeToSec($1), lyric: $2 })
+      }
+    })
+    return lyric
   }
 }

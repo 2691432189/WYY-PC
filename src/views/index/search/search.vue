@@ -211,18 +211,15 @@ export default {
     }
   },
   watch: {
-    info: function (params) {
-      this.musicListPage = 1
-      this.musicDetailsPage = 1
-      this.getSearchMusicResult()
-      this.getSearchmusicDetailsPageResult()
+    info: {
+      handler: function () {
+        this.musicListPage = 1
+        this.musicDetailsPage = 1
+        this.getSearchMusicResult()
+        this.getSearchmusicDetailsPageResult()
+      },
+      immediate: true
     }
-  },
-  created () {
-    this.musicListPage = 1
-    this.musicDetailsPage = 1
-    this.getSearchMusicResult()
-    this.getSearchmusicDetailsPageResult()
   }
 }
 </script>

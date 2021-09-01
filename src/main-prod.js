@@ -26,6 +26,12 @@ Vue.prototype.$times = utils.times
 // 获取年龄
 Vue.prototype.$getAstro = utils.getAstro
 
+// 歌词处理
+Vue.prototype.$lyricsProcess = utils.lyricsProcess
+
+// 歌词时间转化成秒
+Vue.prototype.$formatTimeToSec = utils.formatTimeToSec
+
 new Vue({
   router,
   store,

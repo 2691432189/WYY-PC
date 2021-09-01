@@ -350,9 +350,11 @@ export default {
     },
     // 获取喜欢音乐列表方法
     async  getLikeMusicList () {
-      const { data: res } = await this.$http.getLikeMusicList(window.localStorage.getItem('uid'))
-      if (res.code !== 200) return this.$message.error('获取喜欢的音乐列表失败')
-      this.LikeMusicList = res.ids
+      if (window.localStorage.getItem('login')) {
+        const { data: res } = await this.$http.getLikeMusicList(window.localStorage.getItem('uid'))
+        if (res.code !== 200) return this.$message.error('获取喜欢的音乐列表失败')
+        this.LikeMusicList = res.ids
+      }
     },
     // 判断音乐是否已被喜欢
     ifLikeMusic (id) {
@@ -439,23 +441,26 @@ export default {
     }
   },
   watch: {
-    id: function () {
-      // 每次切换歌单时将列表清空
-      this.musicUrlList = []
-      this.musicList = []
-      this.num = 0
-      // 调用获取歌单详细信息方法
-      this.getDetailsPage()
-      // 调用获取评论列表
-      this.getCommentList()
-      // 调用获取喜欢音乐列表方法
-      this.getLikeMusicList()
-      // 调用获取歌单收藏列表
-      this.getCollectorList()
-      // 切换歌单后自动回到顶部
-      if (window.document.querySelector('.backtop')) {
-        window.document.querySelector('.backtop').click()
-      }
+    id: {
+      handler: function () {
+        // 每次切换歌单时将列表清空
+        this.musicUrlList = []
+        this.musicList = []
+        this.num = 0
+        // 调用获取歌单详细信息方法
+        this.getDetailsPage()
+        // 调用获取评论列表
+        this.getCommentList()
+        // 调用获取喜欢音乐列表方法
+        this.getLikeMusicList()
+        // 调用获取歌单收藏列表
+        this.getCollectorList()
+        // 切换歌单后自动回到顶部
+        if (window.document.querySelector('.backtop')) {
+          window.document.querySelector('.backtop').click()
+        }
+      },
+      immediate: true
     }
   },
   computed: {
@@ -464,16 +469,6 @@ export default {
       if (this.detailsPageInfo.creator.nickname === this.userName) return false
       return true
     }
-  },
-  mounted () {
-    // 调用获取歌单详细信息方法
-    this.getDetailsPage()
-    // 调用获取评论列表
-    this.getCommentList()
-    // 调用获取喜欢音乐列表方法
-    this.getLikeMusicList()
-    // 调用获取歌单收藏列表
-    this.getCollectorList()
   }
 }
 </script>
