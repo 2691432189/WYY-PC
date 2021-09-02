@@ -1,7 +1,7 @@
 // 导入axios包
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://47.97.106.32:8889'
 // http://localhost:3000
 // http://47.97.106.32:8889
 axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别

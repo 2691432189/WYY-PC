@@ -134,9 +134,6 @@
 </template>
 
 <script>
-// 导入MV组件
-import { videoPlayer } from 'vue-video-player'
-import 'video.js/dist/video-js.css'
 export default {
   props: {
     mvId: {
@@ -221,9 +218,6 @@ export default {
       this.$router.push('/UserInfo/' + userId)
     }
 
-  },
-  components: {
-    videoPlayer
   },
   watch: {
     mvIds: {

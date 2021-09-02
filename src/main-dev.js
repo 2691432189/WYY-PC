@@ -2,11 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import './plugins/element.js'
+import 'video.js/dist/video-js.css'
 import './css/global.css'
 import api from './api/api'
 import { play } from './common/play/play'
 import utils from './common/utils/utils'
+import VideoPlayer from 'vue-video-player'
 
 Vue.prototype.$http = api
 Vue.prototype.$play = play
@@ -31,6 +32,8 @@ Vue.prototype.$lyricsProcess = utils.lyricsProcess
 
 // 歌词时间转化成秒
 Vue.prototype.$formatTimeToSec = utils.formatTimeToSec
+
+Vue.use(VideoPlayer)
 
 new Vue({
   router,

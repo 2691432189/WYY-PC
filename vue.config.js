@@ -11,12 +11,22 @@ module.exports = {
       // 使用externals设置排除项
       config.set('externals', {
         vue: 'Vue',
-        axios: 'axios'
+        axios: 'axios',
+        'element-ui': 'ELEMENT',
+        'vue-router': 'VueRouter',
+        vuex: 'Vuex'
       })
     })
     // 开发模式
     config.when(process.env.NODE_ENV === 'development', config => {
       config.entry('app').clear().add('./src/main-dev.js')
+      config.set('externals', {
+        vue: 'Vue',
+        axios: 'axios',
+        'element-ui': 'ELEMENT',
+        'vue-router': 'VueRouter',
+        vuex: 'Vuex'
+      })
     })
   }
 }
