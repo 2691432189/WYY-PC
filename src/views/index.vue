@@ -332,7 +332,7 @@
 </template>
 
 <script>
-import aplayer from './index/aplayer/aplayer'
+import aplayer from '../components/aplayer/aplayer.vue'
 export default {
   data () {
     // 手机号自定义验证

@@ -167,7 +167,7 @@
 </template>
 
 <script>
-import moving from '../../../components/moving.vue'
+import moving from '../../../components/moving/moving.vue'
 export default {
   props: {
     userId: {

@@ -3,10 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
-import './assets/css/global.css'
-import api from './common/api'
-import { play } from './common/play'
-import utils from './common/utils'
+import './css/global.css'
+import api from './api/api'
+import { play } from './common/play/play'
+import utils from './common/utils/utils'
 
 Vue.prototype.$http = api
 Vue.prototype.$play = play

@@ -227,12 +227,16 @@ export default {
     },
     // 更换音乐
     changeSong (data) {
-      if (data === 0) {
-        this.indexs > 0 ? this.indexs-- : this.indexs = this.data.length - 1
-      } else if (data === 1) {
-        this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
+      if (this.playWay === 3) {
+        this.indexs = Math.floor(Math.random() * this.data.length)
       } else {
-        this.indexs = data.index
+        if (data === 0) {
+          this.indexs > 0 ? this.indexs-- : this.indexs = this.data.length - 1
+        } else if (data === 1) {
+          this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
+        } else {
+          this.indexs = data.index
+        }
       }
     },
     // 自动播放音乐列表中的下一首音乐
