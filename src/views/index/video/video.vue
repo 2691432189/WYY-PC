@@ -77,9 +77,6 @@
       </el-col>
     </el-row>
     <!-- 视频列表 -->
-    <div id="loadMore">
-      加载更多...
-    </div>
   </div>
 </template>
 

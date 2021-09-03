@@ -2,7 +2,12 @@
   <div id="userInfo">
     <div id="userInfoMain">
       <!-- 动态区 -->
-      <div id="eventCount">
+      <div
+        id="eventCount"
+        v-infinite-scroll="loadMore"
+        :infinite-scroll-distance="20"
+        :infinite-scroll-delay="200"
+      >
         <div id="eventCountNav">
           {{ userInfo.nickname }}的动态
         </div>
@@ -19,14 +24,6 @@
           description="当前没有动态哦~"
           v-show="userEvent.length===0?true:false"
         />
-        <!-- 加载更多 -->
-        <div
-          id="loadMore"
-          @click="loadMore()"
-          v-show="userEvent.length===0?false:true"
-        >
-          加载更多...
-        </div>
       </div>
       <!-- 个人信息 -->
       <div id="user">

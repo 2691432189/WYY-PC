@@ -92,9 +92,6 @@
       </el-col>
     </el-row>
     <!-- MV列表 -->
-    <div id="loadMore">
-      加载更多...
-    </div>
   </div>
 </template>
 

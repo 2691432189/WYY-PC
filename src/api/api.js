@@ -84,7 +84,7 @@ export default {
   getMyMusicCloudDisk: (page) => {
     return new Promise((resolve) => {
       resolve(
-        axios.get(`/user/cloud?limit=100&offset=${(page - 1) * 100 || 0}&time=${new Date()}&time=${new Date()}`)
+        axios.get(`/user/cloud?limit=200&offset=${(page - 1) * 200 || 0}&time=${new Date()}&time=${new Date()}`)
       )
     })
   },
