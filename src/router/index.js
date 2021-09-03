@@ -1,19 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Index from '../views/index.vue'
-import DiscoverMusic from '../views/index/discoverMusic/discoverMusic.vue' // 发现音乐
-import Video from '../views/index/video/video.vue' // 视频
-import VideoPlayerPage from '../views/index/videoPlayerPage/videoPlayerPage.vue' // 视频播放页
-import DetailsPage from '../views/index/detailsPage/detailsPage.vue' // 歌单详情页
-import PersonalRecommendation from '../views/index/discoverMusic/PersonalRecommendation/PersonalRecommendation.vue' // 个性推荐
-import SongList from '../views/index/discoverMusic/songList/songList.vue' // 歌单
-import Leaderboard from '../views/index/discoverMusic/Leaderboard/Leaderboard.vue'// 排行榜
-import Search from '../views/index/search/search.vue' // 搜索页
-import CloudDisk from '../views/index/cloudDisk/cloudDisk.vue' // 音乐云盘
-import UserInfo from '../views/index//userInfo/userInfo.vue' //  用户信息
-import MV from '../views/index/mv/mv.vue' // MV
-import MvPlayerPage from '../views/index/mvPlayerPage/mvPlayerPage.vue' // MV播放页
 Vue.use(VueRouter)
+const Index = () => import('../views/index.vue') // 起始页
+const DiscoverMusic = () => import('../views/index/discoverMusic/discoverMusic.vue') // 发现音乐
+const Video = () => import('../views/index/video/video.vue') // 视频
+const VideoPlayerPage = () => import('../views/index/videoPlayerPage/videoPlayerPage.vue') // 视频播放页
+const DetailsPage = () => import('../views/index/detailsPage/detailsPage.vue') // 歌单详情页
+const PersonalRecommendation = () => import('../views/index/discoverMusic/PersonalRecommendation/PersonalRecommendation.vue') // 个性推荐
+const SongList = () => import('../views/index/discoverMusic/songList/songList.vue') // 歌单
+const Leaderboard = () => import('../views/index/discoverMusic/Leaderboard/Leaderboard.vue')// 排行榜
+const Search = () => import('../views/index/search/search.vue') // 搜索页
+const CloudDisk = () => import('../views/index/cloudDisk/cloudDisk.vue')// 音乐云盘
+const UserInfo = () => import('../views/index//userInfo/userInfo.vue') //  用户信息
+const MV = () => import('../views/index/mv/mv.vue') // MV
+const MvPlayerPage = () => import('../views/index/mvPlayerPage/mvPlayerPage.vue') // MV播放页
 
 const routes = [
   { path: '/', redirect: '/DiscoverMusic' },
