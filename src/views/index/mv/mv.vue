@@ -2,6 +2,9 @@
   <div
     id="mv"
     class="mv"
+    v-infinite-scroll="loadMoreMv"
+    :infinite-scroll-distance="20"
+    :infinite-scroll-delay="200"
   >
     <!-- 回到顶部 -->
     <el-backtop
@@ -89,10 +92,7 @@
       </el-col>
     </el-row>
     <!-- MV列表 -->
-    <div
-      id="loadMore"
-      @click="loadMoreMv()"
-    >
+    <div id="loadMore">
       加载更多...
     </div>
   </div>
@@ -125,6 +125,9 @@ export default {
     loadMoreMv () {
       this.mvListage += 30
       this.getMvList()
+    },
+    loadMoreMvs () {
+      console.log(11111111111111)
     },
     // 跳转MV播放页
     playMv (id) {

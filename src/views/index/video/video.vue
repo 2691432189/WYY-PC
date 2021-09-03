@@ -2,6 +2,9 @@
   <div
     id="video"
     class="video"
+    v-infinite-scroll="loadMoreVideo"
+    :infinite-scroll-distance="20"
+    :infinite-scroll-delay="200"
   >
     <!-- 回到顶部 -->
     <el-backtop
@@ -74,10 +77,7 @@
       </el-col>
     </el-row>
     <!-- 视频列表 -->
-    <div
-      id="loadMore"
-      @click="loadMoreVideo()"
-    >
+    <div id="loadMore">
       加载更多...
     </div>
   </div>
@@ -139,6 +139,8 @@ export default {
       this.videoListage = 0
       this.currentSortCat = name
       this.getVideoList(id, this.videoListage)
+      this.videoListage++
+      this.loadMoreVideo()
     }
   },
   created () {

@@ -353,6 +353,17 @@ export default {
         })
     }
   },
+  mounted () {
+    const _this = this
+    // 监听空格事件,控制播放暂停
+    window.document.onkeydown = function (e) {
+      // 清楚默认行为
+      if (e.code === 'Space') {
+        e.preventDefault()
+        _this.isPlayPause()
+      }
+    }
+  },
   components: {
     musicPlayerPage
   },
