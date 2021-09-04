@@ -143,30 +143,21 @@ export default {
     async  httpRequest (file) {
       // 控制是否显示上传加载等待
       this.loading = true
-      var formData = new FormData()
+      const formData = new FormData()
       formData.append('songFile', file.file)
-      this.$http({
-        method: 'post',
-        // 请自行指定完整上传地址
-        url: `http://47.97.106.32:8889/cloud?time=${Date.now()}}`,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        data: formData
-      }).then(res => {
-        this.$message({
-          message: '上传成功,可能会有延迟，请稍后尝试刷新',
-          type: 'success'
+      this.$http.UploadCloud(formData)
+        .then(res => {
+          this.$message({
+            message: '上传成功,可能会有延迟，请稍后尝试刷新',
+            type: 'success'
+          })
+          this.loading = false
+        }).catch(err => {
+          this.$message.error('上传失败')
+          console.log(err)
+          // 控制是否显示上传加载等待
+          this.loading = false
         })
-        // 调用获取云盘数据方法
-        // this.getMyMusicCloudDisk()
-        this.loading = false
-      }).catch(async err => {
-        this.$message.error('上传失败')
-        console.log(err)
-        // 控制是否显示上传加载等待
-        this.loading = false
-      })
     },
     // 双击播放
     doubleClickToPlay (row) {

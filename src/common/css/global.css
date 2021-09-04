@@ -4,6 +4,8 @@
   -ms-user-select:none; /*IE10*/
   -khtml-user-select:none; /*早期浏览器*/
   user-select:none;
+  margin: 0;
+  padding: 0;
 }
 
 /* 去除所有链接默认样式 */
