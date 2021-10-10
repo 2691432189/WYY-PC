@@ -150,7 +150,7 @@ export default {
     },
     // 跳转MV播放页
     playMv (id) {
-      this.$router.push('/MvPlayerPage/' + id)
+      this.$router.push('/VideoPlayerPage/' + id + '/' + 'Mv')
     }
   },
   created () {
