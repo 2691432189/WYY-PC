@@ -166,7 +166,8 @@ export default {
 
 <style lang="less" scoped>
 .el-carousel {
-  margin-top: 30px;
+  margin: 30px auto 0;
+  max-width: 1100px;
 }
 // 最新音乐
 .newMusicTab {

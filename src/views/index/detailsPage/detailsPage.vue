@@ -163,12 +163,12 @@
             </el-table-column>
           </el-table>
           <!-- 加载更多 -->
-          <div
+          <!-- <div
             id="loadMore"
             @click="loadMore()"
           >
             加载更多...
-          </div>
+          </div> -->
         </el-tab-pane>
         <!-- 歌曲列表 -->
         <el-tab-pane
@@ -340,8 +340,8 @@ export default {
     },
     // 获取音乐详细信息方法
     async getMusicUrl () {
-      const idList = this.trackIds.slice(this.num, this.num + 50)
-      this.$play(this, idList)
+      // const idList = this.trackIds.slice(this.num, this.num + 50)
+      this.$play(this, this.trackIds)
         .then((res) => {
           this.musicUrlList = [...this.musicUrlList, ...res.musicUrlList]
           this.musicList = [...this.musicList, ...res.songs]
@@ -428,13 +428,13 @@ export default {
       this.$router.push('/UserInfo/' + userId)
     },
     // 加载更多音乐方法
-    loadMore () {
-      if (this.num < this.trackIds.length) {
-        this.getMusicUrl()
-      } else {
-        return this.$message.error('没有更多哟~')
-      }
-    },
+    // loadMore () {
+    //   if (this.num < this.trackIds.length) {
+    //     this.getMusicUrl()
+    //   } else {
+    //     return this.$message.error('没有更多哟~')
+    //   }
+    // },
     // 跳转MV播放页
     playMv (id) {
       this.$router.push('/MvPlayerPage/' + id)
@@ -539,7 +539,7 @@ export default {
   }
   // 切换栏距离顶部距离
   .el-tabs{
-    margin-top: 20px;
+    margin: 20px 0 20px;
     button {
       border:0px;
       cursor:pointer;

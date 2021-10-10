@@ -108,7 +108,8 @@ export default {
       currentOrder: '最热',
       area: ['全部', '内地', '港台', '欧美', '日本', '韩国'],
       type: ['全部', '原生', '官方版', '现场版', '网易出品'],
-      order: ['最热', '最新', '上升最快']
+      order: ['最热', '最新', '上升最快'],
+      title: 'Mv'
     }
   },
   methods: {
@@ -128,7 +129,7 @@ export default {
     },
     // 跳转MV播放页
     playMv (id) {
-      this.$router.push('/MvPlayerPage/' + id)
+      this.$router.push('/VideoPlayerPage/' + id + '/' + this.title)
     },
     // 切换分类
     changeSort (id, name) {

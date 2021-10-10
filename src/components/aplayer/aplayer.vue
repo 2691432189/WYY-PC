@@ -349,7 +349,9 @@ export default {
         .catch(() => {
           this.$message.error('该音乐暂无版权哦~')
           // 当前音乐没版权自动播放下一首
-          this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
+          if (this.data.length !== 1) {
+            this.indexs < this.data.length - 1 ? this.indexs++ : this.indexs = 0
+          }
         })
     }
   },
@@ -384,6 +386,7 @@ export default {
 <style lang="less" scoped>
   #aplayer{
     width: 100%;
+    min-width: 1485px;
     height: 75px;
     background-color: #ffffff;
     z-index: 999;

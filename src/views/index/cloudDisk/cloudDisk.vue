@@ -103,7 +103,7 @@
     <el-pagination
       layout="prev, pager, next"
       :total="myMusicCloudDiskInfo.count"
-      :page-size="200"
+      :page-size="100"
       :current-page="myMusicCloudDiskPage"
       @current-change="myMusicCloudDiskCurrentChange"
     />

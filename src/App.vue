@@ -8,13 +8,14 @@
 export default {
   name: 'App'
 }
-</script>
 
+</script>
+vb
 <style>
 #app{
   margin: 0 auto;
   background-color: #ccc;
   min-width: 1485px;
-  max-width: 1536px;
+  /* max-width: 1536px; */
 }
 </style>

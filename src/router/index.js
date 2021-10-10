@@ -13,7 +13,6 @@ const Search = () => import('../views/index/search/search.vue') // 搜索页
 const CloudDisk = () => import('../views/index/cloudDisk/cloudDisk.vue')// 音乐云盘
 const UserInfo = () => import('../views/index//userInfo/userInfo.vue') //  用户信息
 const MV = () => import('../views/index/mv/mv.vue') // MV
-const MvPlayerPage = () => import('../views/index/mvPlayerPage/mvPlayerPage.vue') // MV播放页
 
 const routes = [
   { path: '/', redirect: '/DiscoverMusic' },
@@ -35,7 +34,7 @@ const routes = [
       // 视频
       { path: '/Video', component: Video },
       // 视频播放页
-      { path: '/VideoPlayerPage/:videoId', component: VideoPlayerPage, props: true },
+      { path: '/VideoPlayerPage/:id/:title', component: VideoPlayerPage, props: true },
       // 歌单详情页
       { path: '/DetailsPage*/:id', component: DetailsPage, props: true },
       // 搜索页
@@ -45,9 +44,7 @@ const routes = [
       //  用户信息
       { path: '/UserInfo/:userId', component: UserInfo, props: true },
       // MV
-      { path: '/Mv', component: MV },
-      // MV播放页
-      { path: '/MvPlayerPage/:mvId', component: MvPlayerPage, props: true }
+      { path: '/Mv', component: MV }
     ]
   }
 ]

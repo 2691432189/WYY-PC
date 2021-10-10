@@ -1,6 +1,6 @@
 // 导入axios包
 import axios from 'axios'
-const url = 'http://localhost:3000'
+const url = 'https://wwyapi.hellokfq.top/'
 // http://localhost:3000
 // http://47.97.106.32:8889
 axios.defaults.baseURL = url
@@ -20,9 +20,7 @@ export default {
 
   // 登录方法
   login: (loginInfo) => {
-    return axios.get(`/login/cellphone?time=${new Date()}`, {
-      params: loginInfo
-    })
+    return axios.post(`/login/cellphone?time=${new Date()}`, loginInfo)
   },
 
   // 获取登录用户信息
@@ -54,7 +52,7 @@ export default {
 
   // 获取云盘数据方法
   getMyMusicCloudDisk: (page) => {
-    return axios.get(`/user/cloud?limit=200&offset=${(page - 1) * 200 || 0}&time=${new Date()}`)
+    return axios.get(`/user/cloud?limit=100&offset=${(page - 1) * 100 || 0}&time=${new Date()}`)
   },
 
   // 上传网盘

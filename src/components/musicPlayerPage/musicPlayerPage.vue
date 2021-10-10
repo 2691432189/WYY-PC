@@ -231,7 +231,7 @@ export default {
       }
       #songImage-1 {
         position: relative;
-        left: 100px;
+        margin: 80px auto 0;
         width: 300px;
         height: 300px;
         border-radius: 50%;
@@ -305,7 +305,7 @@ export default {
         }
         // 评论列表
         .commentList{
-          width: 300px;
+          width: 70%;
           padding: 20px 0;
           position: relative;
           // 评论者头像

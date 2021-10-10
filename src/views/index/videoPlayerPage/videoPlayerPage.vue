@@ -6,7 +6,7 @@
         <!-- 返回至父页面 -->
         <div id="returnVideoPage">
           <span @click="returnVideoPage()">
-            <i class="el-icon-arrow-left" /> 视频详情
+            <i class="el-icon-arrow-left" /> {{ title }}
           </span>
         </div>
         <!-- 播放区 -->
@@ -25,17 +25,17 @@
             <span id="avatar">
               <el-image
                 style="width: 40px; height: 40px; border-radius: 40px;vertical-align: middle"
-                :src="videoInfo.creator.avatarUrl+'?param=40y40'"
+                :src="title === '视频' ? videoInfo.creator.avatarUrl : videoInfo.cover + '?param=40y40'"
                 fit="cover"
               />
             </span>
             <span id="userName">
-              {{ videoInfo.creator.nickname }}
+              {{ title === '视频' ? videoInfo.creator.nickname :videoInfo.artistName }}
             </span>
           </div>
           <!-- 标题 -->
           <div id="title">
-            {{ videoInfo.title }}
+            {{ title === '视频' ? videoInfo.title : videoInfo.name }}
           </div>
           <!-- 时间 -->
           <div id="time">
@@ -53,7 +53,7 @@
           </div>
           <!-- 介绍 -->
           <div id="introduce">
-            {{ videoInfo.description }}
+            {{ title === '视频' ? videoInfo.description : videoInfo.desc }}
           </div>
         </div>
       </div>
@@ -67,13 +67,13 @@
           id="relatedVideo"
           v-for="(item) in relatedVideo"
           :key="item.vid"
-          @click="goRelatedVideo(item.vid)"
+          @click="goRelatedVideo(title === '视频' ? item.vid : item.id)"
         >
           <!-- 相关视频推荐封面 -->
           <div id="relatedVideoImg">
             <el-image
               style="width: 140px; height: 80px; border-radius: 5px;vertical-align: middle"
-              :src="item.coverUrl+'?param=150y80'"
+              :src="title === '视频' ? item.coverUrl : item.cover + '?param=150y80'"
               fit="cover"
             />
             <!-- 播放数量 -->
@@ -81,16 +81,16 @@
               id="views"
               class="el-icon-caret-right"
             >
-              {{ $arrangement(item.durationms) }}
+              {{ $arrangement(title === '视频' ? item.durationms : item.duration) }}
             </div>
           </div>
           <!-- 相关视频推荐信息 -->
           <div id="relatedVideoInfo">
             <div id="title">
-              {{ item.title }}
+              {{ title === '视频' ? item.title : item.name }}
             </div>
             <div id="userName">
-              {{ item.creator[0].userName }}
+              {{ title === '视频' ? item.creator[0].userName : item.artistName }}
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@
           </span>
         </div>
         <div
-          v-show="videoComment.length===0?true:false"
+          v-show="videoComment.length === 0?true:false"
         >
           当前评论为空哦~
         </div>
@@ -136,7 +136,11 @@
 <script>
 export default {
   props: {
-    videoId: {
+    id: {
+      type: String,
+      default: ''
+    },
+    title: {
       type: String,
       default: ''
     }
@@ -153,7 +157,6 @@ export default {
       relatedVideo: [],
       //  视频评论
       videoComment: [],
-      videoIds: this.videoId,
       // 播放器配置
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
@@ -182,38 +185,38 @@ export default {
   methods: {
     // 获取视频详情
     async getVideoDetails () {
-      const { data: res } = await this.$http.getVideoDetails(this.videoIds)
+      const { data: res } = this.title === '视频' ? await this.$http.getVideoDetails(this.id) : await this.$http.getMvDetails(this.id)
       if (res.code !== 200) return this.$message.error('获取视频详情失败')
       this.videoInfo = res.data
     },
     // 获取视频Url
     async getVideoUrl () {
-      const { data: res } = await this.$http.getVideoUrl(this.videoIds)
+      const { data: res } = this.title === '视频' ? await this.$http.getVideoUrl(this.id) : await this.$http.getMvUrl(this.id)
       if (res.code !== 200) return this.$message.error('获取视频播放地址失败')
-      this.playerOptions.sources[0].src = res.urls[0].url
+      this.playerOptions.sources[0].src = this.title === '视频' ? res.urls[0].url : res.data.url
     },
     // 获取视频评论
     async getVideoComment () {
-      const { data: res } = await this.$http.getVideoComment(this.videoIds)
+      const { data: res } = this.title === '视频' ? await this.$http.getVideoComment(this.id) : await this.$http.getMvComment(this.id)
       if (res.code !== 200) return this.$message.error('获取视视频评论失败')
       this.videoComment = res.hotComments
     },
     // 获取相关视频
     async getRelatedVideo () {
-      const { data: res } = await this.$http.getRelatedVideo(this.videoIds)
+      const { data: res } = this.title === '视频' ? await this.$http.getRelatedVideo(this.id) : await this.$http.getRelatedMv(this.id)
       if (res.code !== 200) return this.$message.error('获取相关视频失败')
-      if (res.data.length > 4) {
-        res.data.length = 4
+      if (this.title === '视频' ? res.data.length : res.mvs.length > 4) {
+        this.title === '视频' ? res.data.length = 4 : res.mvs.length = 4
       }
-      this.relatedVideo = res.data
+      this.relatedVideo = this.title === '视频' ? res.data : res.mvs
     },
     // 返回至父页面
     returnVideoPage () {
-      this.$router.push('/Video')
+      this.$router.push(this.title === '视频' ? '/Video' : '/Mv')
     },
     //  跳转至相关视频
     goRelatedVideo (vid) {
-      this.videoIds = vid
+      this.$router.push('/VideoPlayerPage/' + vid + '/' + this.title)
     },
     // 跳转用户信息页
     goUserInfo (userId) {
@@ -222,9 +225,9 @@ export default {
 
   },
   watch: {
-    videoIds: {
+    id: {
       handler: function () {
-      // 获取视频详细信息
+        // 获取视频详细信息
         this.getVideoDetails()
         // 获取视频Url
         this.getVideoUrl()
@@ -319,13 +322,13 @@ export default {
       cursor:pointer;
       // 相关视频推荐封面
       #relatedVideoImg{
-        flex: 10;
+        width: 140px;
         position: relative;
       }
       #views {
         position: absolute;
         top: 0;
-        right: 25px;
+        right: 0;
         font-size: 12px;
         padding: 3px 6px;
         color: rgb(230, 230, 230);
@@ -334,8 +337,8 @@ export default {
       }
       // 相关视频推荐信息
       #relatedVideoInfo {
-        flex: 20;
-        padding-top: 5px;
+        flex: 1;
+        padding: 5px 0 0 15px;
         #title {
           width: 250px;
           padding-bottom: 5px;

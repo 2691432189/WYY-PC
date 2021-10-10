@@ -93,7 +93,8 @@ export default {
       // 视频列表
       videoList: [],
       // 视频列表当前页
-      videoListage: 0
+      videoListage: 0,
+      title: '视频'
     }
   },
   methods: {
@@ -127,7 +128,7 @@ export default {
     },
     // 跳转视频播放页
     async  playVideo (id) {
-      this.$router.push('/VideoPlayerPage/' + id)
+      this.$router.push('/VideoPlayerPage/' + id + '/' + this.title)
     },
     // 切换分类
     changeSort (id, name) {

@@ -133,7 +133,7 @@
       <el-container>
         <!-- 侧边栏 -->
         <el-aside
-          width="220px"
+          width="15%"
           id="mainBody"
           ref="aside"
         >
@@ -716,7 +716,7 @@ export default {
 #aplayer {
   position: fixed ;
   bottom: 0px;
-  width: 1536px;
+  // width: 1536px;
   border-top: 1px solid #ccc;
 }
 </style>
