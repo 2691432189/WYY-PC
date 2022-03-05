@@ -128,7 +128,7 @@ export default {
     },
     // 跳转视频播放页
     async  playVideo (id) {
-      this.$router.push('/VideoPlayerPage/' + id + '/' + this.title)
+      this.$router.replace('/VideoPlayerPage/' + id + '/' + this.title)
     },
     // 切换分类
     changeSort (id, name) {

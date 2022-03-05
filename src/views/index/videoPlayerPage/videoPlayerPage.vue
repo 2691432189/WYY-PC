@@ -216,11 +216,11 @@ export default {
     },
     //  跳转至相关视频
     goRelatedVideo (vid) {
-      this.$router.push('/VideoPlayerPage/' + vid + '/' + this.title)
+      this.$router.replace('/VideoPlayerPage/' + vid + '/' + this.title)
     },
     // 跳转用户信息页
     goUserInfo (userId) {
-      this.$router.push('/UserInfo/' + userId)
+      this.$router.replace('/UserInfo/' + userId)
     }
 
   },
